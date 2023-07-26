@@ -106,7 +106,7 @@
       fetch('/intro', {
         method: 'POST',
       })
-      .then(response => response.json())
+      .then(response => response.text())
       .then(data => {
         // Handle the response data, assuming 'data' is an object containing the 'response_text' and 'is_final' fields
         const responseText = data.response_text;
