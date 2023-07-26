@@ -7,12 +7,12 @@
 
 <body>
   <div id="webcam-container">
-    <video id="webcam-video" muted autoplay></video>
+    <video id="webcam-video" autoplay="true"></video>
     <canvas id="canvas"></canvas>
   </div>
 
   <div id="vid-container">
-    <video id="video-player" autoplay>
+    <video id="video-player" muted="true" autoplay="true" playsinline="true">
     </video>
   </div>
 
@@ -22,7 +22,7 @@
     <br>
     <input type="submit" value="Submit">
   </form>
-  <button id="start_button" role="button" onclick="playIntro()">Enter</button>
+  <button id="start_button" role="button" onClickCapture="playIntro()">Enter</button>
   <div class="transcripts">
     <p id="transcript"></p>
     <p id="transcript_11labs">Welcome to the Ayn-Tycho corporation baseline test for off-world training. <br/> Please respond naturally with simple associations to what you hear and see to achieve your baseline and move to the next phase of training. <br/> To initiate say "start"</p>
