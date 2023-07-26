@@ -22,7 +22,7 @@
     <br>
     <input type="submit" value="Submit">
   </form>
-  <button id="start_button" role="button" onClickCapture="playIntro()">Enter</button>
+  <button id="start_button" role="button" onClick="playIntro()">Enter</button>
   <div class="transcripts">
     <p id="transcript"></p>
     <p id="transcript_11labs">Welcome to the Ayn-Tycho corporation baseline test for off-world training. <br/> Please respond naturally with simple associations to what you hear and see to achieve your baseline and move to the next phase of training. <br/> To initiate say "start"</p>
@@ -33,11 +33,15 @@
     function playVideo(filename) {
       const videoPlayer = document.getElementById('video-player');
       videoPlayer.src = filename;
-      videoPlayer.play()
-        .catch(error => {
-          // Play request was interrupted, try again after a short delay
-          setTimeout(() => videoPlayer.play(), 100);
-        });
+
+      // Wait for the "loadeddata" event before attempting to play
+      videoPlayer.addEventListener('loadeddata', () => {
+        videoPlayer.play()
+          .catch(error => {
+            // Play request was interrupted, try again after a short delay
+            setTimeout(() => videoPlayer.play(), 100);
+          });
+      });
     }
 
     // Function to fetch the video URL and start playing
@@ -104,9 +108,9 @@
         // myWindow.document.write("<p>This is 'MsgWindow'. I am 200px wide and 100px tall!</p>");
       // Make a POST request to the "/intro" route
       fetch('/intro', {
-        method: 'POST',
+        method: 'GET',
       })
-      .then(response => response.text())
+      .then(response => response.json())
       .then(data => {
         // Handle the response data, assuming 'data' is an object containing the 'response_text' and 'is_final' fields
         const responseText = data.response_text;
