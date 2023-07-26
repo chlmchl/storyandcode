@@ -195,9 +195,6 @@ def generate_audio():
             
             return jsonify({'response_text': response_text, 'is_final': False})
 
-    print(b1, b2)    
-    print(response_text)
-
     return jsonify({'response_text': '', 'is_final': True})
     
 if __name__ == '__main__':

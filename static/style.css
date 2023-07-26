@@ -42,7 +42,7 @@ body {
 #transcript, #transcript_11labs {
     width: 60vw;
     bottom: 10px;
-    color: white;
+    color: lightgray;
     font-size: 34px;
     text-align: center;
 }
