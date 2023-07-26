@@ -2,8 +2,6 @@ from flask import Flask, render_template, request, jsonify, session, send_file
 # from flask_cors import CORS
 from elevenlabs import voices, generate, stream, set_api_key
 import openai
-import cv2
-import dlib
 import os
 
 set_api_key("d33a219d3324143b9d803a9e4bec5480")
@@ -178,7 +176,7 @@ def generate_audio():
                           {"role": "assistant", "content":"A vial of sparkling water that grants eternal youth"}, 
                           {"role": "user", "content":"Eternal"},
                           {"role": "assistant", "content":"The stream is a portal"}, 
-                          {"role": "user", "content":"Ethereal"}]
+                          {"role": "user", "content":"Ethereal"}],
                 prompt=text_input,
                 max_tokens=20,  # Adjust the response length as desired
                 n=1,  # Generate a single response
