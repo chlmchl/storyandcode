@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+
+<head>
+  <link rel="stylesheet" type="text/css" href="../static/style.css" />
+</head>
+<html>
+
+<body>
+  <div id="webcam-container">
+    <video id="webcam-video" autoplay></video>
+    <canvas id="canvas"></canvas>
+  </div>
+
+  <div id="vid-container">
+    <video id="video-player" autoplay>
+    </video>
+  </div>
+
+  <form id="speech-form" enctype="multipart/form-data">
+    <label for="text-input">Enter your text input:</label><br>
+    <input type="text" id="text-input" name="text-input" required><br>
+    <br>
+    <input type="submit" value="Submit">
+  </form>
+  <button id="start_button" role="button" onclick="playIntro()">Enter</button>
+  <div class="transcripts">
+    <p id="transcript"></p>
+    <p id="transcript_11labs">Welcome to the Ayn-Tycho corporation baseline test for off-world training. <br/> Please respond naturally with simple associations to what you hear and see to achieve your baseline and move to the next phase of training. <br/> To initiate say "start"</p>
+  </div>
+
+  <script>
+    // Function to set the video source and start playing
+    function playVideo(filename) {
+      const videoPlayer = document.getElementById('video-player');
+      videoPlayer.src = filename;
+      videoPlayer.play()
+        .catch(error => {
+          // Play request was interrupted, try again after a short delay
+          setTimeout(() => videoPlayer.play(), 100);
+        });
+    }
+
+    // Function to fetch the video URL and start playing
+    function fetchAndPlayVideo() {
+      fetch('/video')
+        .then(response => response.json())
+        .then(data => {
+          if (data.is_final) {
+            // If it's the final video, reload the page after a delay (optional)
+            setTimeout(() => location.reload(), 3000);
+          } else {
+            // If not the final video, play the video and fetch the next one after it ends
+            const videoPlayer = document.getElementById('video-player');
+            videoPlayer.addEventListener('ended', () => {
+              setTimeout(fetchAndPlayVideo, 1000); // Add a 1000ms delay before fetching the next video
+            });
+
+            playVideo(data.video_url);
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching video:', error);
+          // Handle any error, you may want to reload the page or show an error message
+        });
+    }
+
+    // Call the fetchAndPlayVideo function when the page loads
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchAndPlayVideo();
+    });
+  </script>
+
+  <script>
+    // Access the webcam and stream video
+    if ('mediaDevices' in navigator && 'getUserMedia' in navigator.mediaDevices) {
+      const webcamVideo = document.getElementById('webcam-video');
+
+      // Request access to the webcam
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => {
+          // Display the webcam video stream
+          webcamVideo.srcObject = stream;
+        })
+        .catch(error => {
+          console.log('Unable to access the webcam:', error);
+        });
+    } else {
+      console.log('Webcam access not supported');
+    }
+  </script>
+
+  <script>
+    // Function to play the intro audio
+    function playIntro() {
+      // Hide the start button
+        const startButton = document.getElementById('start_button');
+        startButton.style.display = 'none';
+
+        // Show the transcript paragraph
+        const transcriptsDiv = document.getElementById('transcript_11labs');
+        transcriptsDiv.style.display = 'block';
+
+        // var myWindow = window.open("", "MsgWindow", "width=200,height=100");
+        // myWindow.document.write("<p>This is 'MsgWindow'. I am 200px wide and 100px tall!</p>");
+      // Make a POST request to the "/intro" route
+      fetch('/intro', {
+        method: 'POST',
+      })
+      .then(response => response.json())
+      .then(data => {
+        // Handle the response data, assuming 'data' is an object containing the 'response_text' and 'is_final' fields
+        const responseText = data.response_text;
+        // Log the received response text in the console
+        console.log('Received response text:', responseText);
+        document.getElementById('transcript_11labs').innerHTML = responseText;
+
+        // If the response is not final, start the recognition
+        if (!data.is_final) {
+          startRec();
+        } else {
+          // Otherwise, the intro is done, and you can proceed to fetch and play videos
+          //fetchAndPlayVideo();
+        }
+      })
+      .catch(error => {
+        // Handle any errors that occurred during the AJAX request
+        console.error('Error playing intro:', error);
+      });
+    }
+  </script>
+
+  <script>
+    function startRec() {
+      if ('webkitSpeechRecognition' in window) {
+        const recognition = new webkitSpeechRecognition();
+        const form = document.getElementById('speech-form');
+        const inputField = document.getElementById('text-input');
+        let isSpeaking = false;
+
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.lang = 'en-US';
+        recognition.start();
+
+        recognition.onresult = function (event) {
+          const transcript = event.results[event.results.length - 1][0].transcript;
+          inputField.value = transcript;
+          document.getElementById('transcript').innerHTML = transcript;
+
+          // Check for silence or pauses in speech
+          const lastResult = event.results[event.results.length - 1];
+          if (lastResult.isFinal) {
+            isSpeaking = false;
+            if (inputField.value.trim() !== '') {
+              sendData();
+              recognition.stop();
+            }
+          } else {
+            isSpeaking = true;
+          }
+        };
+
+        recognition.onstart = function () {
+          isSpeaking = true;
+        };
+
+        recognition.onend = function () {
+          if (isSpeaking) {
+            // The user has stopped speaking
+            isSpeaking = false;
+            // Wait for 1 second before restarting the recognition
+
+          }
+        };
+
+        function sendData() {
+          const formData = new FormData(form);
+          fetch('/generate', {
+            method: 'POST',
+            body: formData,
+          })
+            .then(response => response.json()) // Parse the response as JSON
+            .then(data => {
+              // Handle the response data, assuming 'data' is an object containing the 'response_text' and 'is_final' fields
+              const responseText = data.response_text;
+              // Log the received response text in the console
+              console.log('Received response text:', responseText);
+              document.getElementById('transcript_11labs').innerHTML = responseText;
+
+              // Check if the response is final and act accordingly
+              if (data.is_final) {
+                // Do something when the response is final, such as ending the recognition or resetting the form
+                recognition.stop();
+              }
+
+              // Restart the recognition after the generated audio has finished streaming
+              setTimeout(() => {
+                recognition.start();
+              }, 1000);
+            })
+            .catch(error => {
+              // Handle any errors that occurred during the AJAX request
+              console.error('Error sending form data:', error);
+
+              // Restart the recognition after an error occurs
+              setTimeout(() => {
+                recognition.start();
+              }, 1000);
+            });
+        }
+
+        form.addEventListener('submit', function (event) {
+          event.preventDefault();
+          // Stop the recognition when the form is manually submitted
+          recognition.stop();
+          // Call the sendData function only when the user speaks (not generated audio)
+          if (inputField.value.trim() !== '') {
+            sendData();
+          }
+        });
+
+        console.log("isSpeaking: " + isSpeaking)
+      }
+    }
+  </script>
+</body>
+
+</html>
