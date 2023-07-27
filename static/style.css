@@ -86,7 +86,21 @@ h1 span{
     flex-direction: column;
     background-image: url('../static/img/space.jpg');
     background-position: 10%;
+    animation-name: MOVE-BG;
+    animation-duration: 100s;
+    animation-timing-function: ease;
+    animation-iteration-count: infinite;
 }
+
+@keyframes MOVE-BG {
+    from {
+        background-size: 150%;
+    }
+    to { 
+        background-size: 160%;
+    }
+ }
+
 
 .call-to-participate {
     padding: 150px 0;
