@@ -44,26 +44,6 @@ def read_csv_to_array(csv_file, csv_array):
 
     return csv_array
 
-def get_batch_1_videos():
-    video_folder = 'static/vids/batch_1'
-    video_files = [file for file in os.listdir(video_folder) if file.endswith(".mp4")]
-    return video_files
-
-def get_batch_2_videos():
-    video_folder = 'static/vids/batch_2'
-    video_files = [file for file in os.listdir(video_folder) if file.endswith(".mp4")]
-    return video_files
-
-def get_batch_3_videos():
-    video_folder = 'static/vids/batch_3'
-    video_files = [file for file in os.listdir(video_folder) if file.endswith(".mp4")]
-    return video_files
-
-def get_batch_x_videos():
-    video_folder = 'static/vids/batch_x'
-    video_files = [file for file in os.listdir(video_folder) if file.endswith(".mp4")]
-    return video_files
-
 # Check if the 'current_video_index' session variable exists, and initialize it to 0 if not
 # @app.before_request
 # def init_session_vars():
@@ -73,6 +53,11 @@ def get_batch_x_videos():
 @app.route('/')
 def index():   
     return render_template('index.html')
+
+@app.route('/participate', methods=['POST', 'GET'])
+def participate():   
+    return render_template('participate.html')
+
 
 @app.route ('/intro', methods=['POST', 'GET'])
 def intro():

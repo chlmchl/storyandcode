@@ -1,3 +1,9 @@
+a {
+    text-transform: none;
+    text-decoration: none;
+    color: black;
+}
+
 body {
     margin: 0;
     top: 0;
@@ -6,7 +12,161 @@ body {
     height: 100vh;
     display: flex;
     justify-content: center;
+    background-color: black;
+    color: #fff;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
+
+header {
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 175px;
+    right: 70px;
+    height: 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+nav li {
+    margin-right: 35px;
+    padding: 10px 0px;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: white;
+    position: relative;
+}
+
+nav li::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: #fff;
+    transition: width 0.3s ease; /* Add the transition effect */
+}
+
+nav li:hover::before {
+    width: 100%; /* On hover, expand the width to 100% */
+}
+
+h1 {
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+    color: white;
+
+}
+
+h1 span{
+    text-transform: uppercase;
+}
+
+
+
+/* Call to Participate section */
+.container {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: flex-end;
+    align-items: end;
+    flex-direction: column;
+    background-image: url('../static/img/space.jpg');
+    background-position: 10%;
+}
+
+.call-to-participate {
+    padding: 150px 0;
+    margin: 0 80px 0 175px;
+}
+
+.call-to-participate h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.call-to-participate p {
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    width: 50%;
+}
+
+.cta-button {
+    display: inline-block;
+    background-color: transparent;
+    color: #fff;
+    position: relative; /* Add relative positioning to the button */
+    padding: 10px 30px;
+    border: #fff 1px solid;
+    text-decoration: none;
+    font-size: 12px;
+    overflow: hidden; /* Hide overflowing content */
+    
+}
+
+.cta-button {
+    color: #FFF;
+    background: transparent;
+    text-decoration: none;
+    text-transform: uppercase;
+    border: 1px solid #FFF;
+    width: fit-content;
+    width: intrinsic;
+    width: -moz-max-content;
+    width: -webkit-max-content;
+    padding: 1.25em 3em;
+    margin-top: 1em;
+    position: relative;
+    overflow: hidden;
+    z-index: 100;
+  }
+    .cta-button::before {
+    background: #FFF;
+    content: "";
+    position: absolute;
+    z-index: -1;
+  }
+    .cta-button::after {
+    background: #FFF;
+    content: "";
+    position: absolute;
+    z-index: -1;
+  }
+    .cta-button:hover {
+    color: #000;
+    cursor: pointer;
+  }
+  .cta-button::after {
+    height: 100%;
+    left: 0;
+    top: 0;
+    width: 100%;
+    transform-origin: top center;
+    transform: scale3d(1, 0, 1);
+    transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  .cta-button:hover::after {
+    height: 100%;
+    width: 100%;
+    transform: scale3d(1, 1, 1);
+    transform-origin: bottom center;
+  }
+
 #webcam-video{
     position: fixed;
     z-index: 100;
