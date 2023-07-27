@@ -4,6 +4,7 @@ from elevenlabs import voices, generate, stream, set_api_key
 import openai
 import os
 import random
+import csv
 
 set_api_key("d33a219d3324143b9d803a9e4bec5480")
 openai.api_key = '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' 
@@ -27,8 +28,22 @@ video_files_b2 = []
 video_files_b3 = []
 video_files_x = []
 started = False
+csv_array = []
+csv_array_audio = []
 
 # Function to get a list of all video filenames in the "batch_1" folder
+
+def read_csv_to_array(csv_file, csv_array):
+    with open(csv_file, newline='') as csvfile:
+        reader = csv.reader(csvfile)
+        header = next(reader)  # Skip the header row
+        for row in reader:
+            # Filter out empty values and remove any extra spaces
+            row_values = [value.strip() for value in row if value.strip()]
+            csv_array.append(row_values)
+
+    return csv_array
+
 def get_batch_1_videos():
     video_folder = 'static/vids/batch_1'
     video_files = [file for file in os.listdir(video_folder) if file.endswith(".mp4")]
@@ -50,167 +65,138 @@ def get_batch_x_videos():
     return video_files
 
 # Check if the 'current_video_index' session variable exists, and initialize it to 0 if not
-@app.before_request
-def init_session_vars():
-    if 'current_video_index' not in session:
-        session['current_video_index'] = 0
+# @app.before_request
+# def init_session_vars():
+#     if 'current_video_index' not in session:
+#         session['current_video_index'] = 0
 
 @app.route('/')
 def index():   
-    global video_files_b1, video_files_b2, video_files_b3, video_files_x
-    video_files_b1 = get_batch_1_videos()
-    video_files_b2 = get_batch_2_videos()
-    video_files_b3 = get_batch_3_videos()
-    video_files_x = get_batch_x_videos()
-    print(video_files_b1)
-    print(video_files_b2)
-    print(video_files_b3)
     return render_template('index.html')
 
 @app.route ('/intro', methods=['POST', 'GET'])
 def intro():
-    global string_index, b1, intro
+    global string_index, b1, intro, video_files_b1, video_files_b2, video_files_b3, video_files_x, csv_array, csv_array_audio
+
+    csv_file_path = 'static/vids_lst.csv'
+    csv_array = read_csv_to_array(csv_file_path, csv_array)
+
+    csv_file_path = 'static/audio_lst.csv'
+    csv_array_audio = read_csv_to_array(csv_file_path, csv_array_audio)
+
+    print("CSV array with nested arrays:", csv_array_audio)
+
     if intro:
         response_text = string_intro
-        audio_stream = generate(
-                    text=response_text,
-                    voice="yoZ06aMxZJJ28mfd3POQ",
-                    stream=True
-                )
-        stream(audio_stream)
+        audioUrl = 'intro.mp3'
+        # audio_stream = generate(
+        #             text=response_text,
+        #             voice="yoZ06aMxZJJ28mfd3POQ",
+        #             stream=True
+        #         )
+        # stream(audio_stream)
 
         intro = False
-        b1 = True
-    return jsonify({'response_text': response_text, 'is_final': False})
-
-@app.route('/video')
-def video():
-    if intro: 
-        b_path = 'static/vids/batch_x/network_intro_dark_fast.mp4'
-    elif b1:
-        video_files = video_files_b1
-        b_path = 'static/vids/batch_1/'
-    elif b2:
-        video_files = video_files_b2
-        b_path = 'static/vids/batch_2/'
-    elif b3:
-        video_files = video_files_b3
-        b_path = 'static/vids/batch_3/'
-    
-    if intro: 
-        video_path = b_path
-    else:
-        # current_video_index = session.get('current_video_index', 0)
-
-        # if current_video_index >= len(video_files):
-            # app.logger.error("Invalid video index: %d", current_video_index)
-            # return jsonify({'video_url': '', 'is_final': True})
-        random_number = random.randint(0, len(video_files) - 1)
-
-        video_filename = video_files[random_number]
-        video_path = b_path + video_filename
-
-        # current_video_index = (current_video_index + 1) % len(video_files)
-        # session['current_video_index'] = current_video_index
-
-    return jsonify({'video_url': video_path, 'is_final': False})
-
-@app.route('/generate', methods=['POST', 'GET'])
-def generate_audio():
-    text_input = request.form['text-input']
-    global string_index, b1, b2, b3, intro, started
-    response_txt = ""
-
-    if b1:
-        if(text_input == 'start'):
-            response_text = string_list_b1[string_index]
-            audio_stream = generate(
-                    text=response_text,
-                    voice="yoZ06aMxZJJ28mfd3POQ",
-                    stream=True
-                )
-            stream(audio_stream)
-            started = True
-            string_index += 1
-        if started:
-            if(text_input != ""):
-                if string_index < len(string_list_b1):
-                    response_text = string_list_b1[string_index]
-                    response_txt = response_text
-                    audio_stream = generate(
-                        text=response_text,
-                        voice="yoZ06aMxZJJ28mfd3POQ",
-                        stream=True
-                    )
-                    stream(audio_stream)
-                    string_index += 1
-                    if string_index >= len(string_list_b1):
-                        b1 = False
-                        b2 = True
-                        string_index = 0
-                    return jsonify({'response_text': response_text, 'is_final': False})
-    if b2:
-        if(text_input != ""):
-            if string_index < len(string_list_b2):
-                response_text = string_list_b2[string_index]
-                response_txt = response_text
-                audio_stream = generate(
-                    text=response_text,
-                    voice="yoZ06aMxZJJ28mfd3POQ",
-                    stream=True
-                )
-                stream(audio_stream)
-                string_index += 1
-                if string_index >= len(string_list_b2):
-                    b2 = False
-                    b3 = True
-                    string_index = 0
-                return jsonify({'response_text': response_text, 'is_final': False})
+       
+    return jsonify({'response_text': response_text,'audioUrl': audioUrl, 'intro': intro, 'b1': b1, 'csv_array': csv_array, 'csv_array_audio' :csv_array_audio, 'is_final': False})
 
 
-    if b3:
-        if(text_input != ""):
-            response = openai.Completion.create(
-                engine='davinci:ft-personal:test-dv-2023-06-27-09-32-44',  # Choose the appropriate ChatGPT engine
-                # model="gpt-3.5-turbo",
-                # messages=[{"role": "system", "content":"You're a hypnotist trying rapid fire conversation where the user has to answer to a surrealist and abstract affirmations with the first things that comes to mind"}, 
-                #           {"role": "assistant", "content":"You see a stream."}, 
-                #           {"role": "user", "content":"I see a stream"},
-                #           {"role": "assistant", "content":"Is the stream calm or turbulent?"}, 
-                #           {"role": "user", "content":"Calm"},
-                #           {"role": "assistant", "content":"What color is the water in the stream"}, 
-                #           {"role": "user", "content":"The water is blue"},
-                #           {"role": "assistant", "content":"there are fish swimming in the stream"}, 
-                #           {"role": "user", "content":"Goldfish"}, 
-                #           {"role": "assistant", "content":"Tranquility and serenity"}, 
-                #           {"role": "user", "content":"Peace"},
-                #           {"role": "assistant", "content":"A hidden treasure waiting to be discovered"}, 
-                #           {"role": "user", "content":"Rich"}, 
-                #           {"role": "assistant", "content":"Fairies, unicorns, and talking trees"}, 
-                #           {"role": "user", "content":"Fairytale"}, 
-                #           {"role": "assistant", "content":"A vial of sparkling water that grants eternal youth"}, 
-                #           {"role": "user", "content":"Eternal"},
-                #           {"role": "assistant", "content":"The stream is a portal"}, 
-                #           {"role": "user", "content":"Ethereal"}],
-                prompt=text_input,
-                max_tokens=30,  # Adjust the response length as desired
-                n=1,  # Generate a single response
-                stop=None,  # Optionally specify a stop token to end the response
-                temperature=0.7,  # Control the randomness of the response (0.0 to 1.0)
-            )
+# @app.route('/generate', methods=['POST', 'GET'])
+# def generate_audio():
+#     text_input = request.form['text-input']
+#     global string_index, b1, b2, b3, intro, started
+#     response_txt = ""
 
-            response_text = response.choices[0].text.strip()
-            response_txt = response_text
-            audio_stream = generate(
-                text=response_text,
-                voice="yoZ06aMxZJJ28mfd3POQ",
-                stream=True
-            )
-            stream(audio_stream)
+#     if b1:
+#         if(text_input == 'start'):
+#             response_text = string_list_b1[string_index]
+#             # audio_stream = generate(
+#             #         text=response_text,
+#             #         voice="yoZ06aMxZJJ28mfd3POQ",
+#             #         stream=True
+#             #     )
+#             # stream(audio_stream)
+#             started = True
+#             string_index += 1
+#         if started:
+#             if(text_input != ""):
+#                 if string_index < len(string_list_b1):
+#                     response_text = string_list_b1[string_index]
+#                     response_txt = response_text
+#                     audio_stream = generate(
+#                         text=response_text,
+#                         voice="yoZ06aMxZJJ28mfd3POQ",
+#                         stream=True
+#                     )
+#                     stream(audio_stream)
+#                     string_index += 1
+#                     if string_index >= len(string_list_b1):
+#                         b1 = False
+#                         b2 = True
+#                         string_index = 0
+#                     return jsonify({'response_text': response_text, 'b1': b1, 'b2': b2, 'is_final': False})
+#     if b2:
+#         if(text_input != ""):
+#             if string_index < len(string_list_b2):
+#                 response_text = string_list_b2[string_index]
+#                 response_txt = response_text
+#                 audio_stream = generate(
+#                     text=response_text,
+#                     voice="yoZ06aMxZJJ28mfd3POQ",
+#                     stream=True
+#                 )
+#                 stream(audio_stream)
+#                 string_index += 1
+#                 if string_index >= len(string_list_b2):
+#                     b2 = False
+#                     b3 = True
+#                     string_index = 0
+#                 return jsonify({'response_text': response_text, 'b2': b2, 'b3': b3, 'is_final': False})
+
+
+#     if b3:
+#         if(text_input != ""):
+#             response = openai.Completion.create(
+#                 engine='davinci:ft-personal:test-dv-2023-06-27-09-32-44',  # Choose the appropriate ChatGPT engine
+#                 # model="gpt-3.5-turbo",
+#                 # messages=[{"role": "system", "content":"You're a hypnotist trying rapid fire conversation where the user has to answer to a surrealist and abstract affirmations with the first things that comes to mind"}, 
+#                 #           {"role": "assistant", "content":"You see a stream."}, 
+#                 #           {"role": "user", "content":"I see a stream"},
+#                 #           {"role": "assistant", "content":"Is the stream calm or turbulent?"}, 
+#                 #           {"role": "user", "content":"Calm"},
+#                 #           {"role": "assistant", "content":"What color is the water in the stream"}, 
+#                 #           {"role": "user", "content":"The water is blue"},
+#                 #           {"role": "assistant", "content":"there are fish swimming in the stream"}, 
+#                 #           {"role": "user", "content":"Goldfish"}, 
+#                 #           {"role": "assistant", "content":"Tranquility and serenity"}, 
+#                 #           {"role": "user", "content":"Peace"},
+#                 #           {"role": "assistant", "content":"A hidden treasure waiting to be discovered"}, 
+#                 #           {"role": "user", "content":"Rich"}, 
+#                 #           {"role": "assistant", "content":"Fairies, unicorns, and talking trees"}, 
+#                 #           {"role": "user", "content":"Fairytale"}, 
+#                 #           {"role": "assistant", "content":"A vial of sparkling water that grants eternal youth"}, 
+#                 #           {"role": "user", "content":"Eternal"},
+#                 #           {"role": "assistant", "content":"The stream is a portal"}, 
+#                 #           {"role": "user", "content":"Ethereal"}],
+#                 prompt=text_input,
+#                 max_tokens=30,  # Adjust the response length as desired
+#                 n=1,  # Generate a single response
+#                 stop=None,  # Optionally specify a stop token to end the response
+#                 temperature=0.7,  # Control the randomness of the response (0.0 to 1.0)
+#             )
+
+#             response_text = response.choices[0].text.strip()
+#             response_txt = response_text
+#             audio_stream = generate(
+#                 text=response_text,
+#                 voice="yoZ06aMxZJJ28mfd3POQ",
+#                 stream=True
+#             )
+#             stream(audio_stream)
             
-            return jsonify({'response_text': response_text, 'is_final': False})
+#             return jsonify({'response_text': response_text, 'is_final': False})
 
-    return jsonify({'response_text': '', 'is_final': True})
+#     return jsonify({'response_text': '', 'b1': b1, 'b2': b2, 'b3': b3, 'is_final': True})
     
 if __name__ == '__main__':
     app.run()

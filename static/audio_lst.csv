@@ -1,0 +1,20 @@
+file_name, batch, string,
+00_stream1.mp3, b1, "You see a stream",
+01_stream2.mp3, b1, "Is the stream warm or cold?",
+02_road1.mp3, b1, "You see a road",
+03_road2.mp3, b1, "Is the road straight or curved?",
+04_candle.mp3, b1, "A candle is made of brass or wax?",
+05_Wind_shadow.mp3, b2, "I am the wind... I am the shadow.",
+06_chair.mp3, b2, "This is not my chair",
+07_tree.mp3, b2, "You see a tree",
+08_carpentry.mp3, b2, "Carpentry",
+09_elephant.mp3, b2, "Elephant",
+10_tidal.mp3, b2, "Tidal",
+11_berries.mp3, b2, "There are no more berries",
+12_feel.mp3, b3, "How does that make you feel?",
+13_feel.mp3, b3, "How does that make you feel?",
+14_feel.mp3, b3, "How does that make you feel?",
+
+
+
+

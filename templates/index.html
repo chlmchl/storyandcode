@@ -12,6 +12,7 @@
   </div>
 
   <div id="vid-container">
+    <video id="video-player2" muted="true" autoplay="true" playsinline="true"></video>
     <video id="video-player" muted="true" autoplay="true" playsinline="true"></video>
   </div>
 
@@ -28,52 +29,79 @@
   </div>
 
   <script>
+    let vids_b1 = []
+    let vids_b2 = []
+    let vids_b3 = []
+    let audio_b1 = []
+    let audio_b2 = []
+    let audio_b3 = []
+    let vids_x = []
+    let intro = true;
+    let b1 = false;
+    let b2 = false; 
+    let b3 = false;
+    let started = false;
+    let b1_index = 0;
+    let b2_index = 0;
+    let b3_index = 0;
+
     // Function to set the video source and start playing
-    function playVideo(filename) {
+    function playVideo(filename, pacing, match) {
       const videoPlayer = document.getElementById('video-player');
       videoPlayer.src = filename;
-
+      // console.log('play video')
       // Wait for the "loadeddata" event before attempting to play
       videoPlayer.addEventListener('loadeddata', () => {
+        // console.log('video loaded')
         videoPlayer.play()
           .catch(error => {
             // Play request was interrupted, try again after a short delay
-            setTimeout(() => videoPlayer.play(), 100);
+            setTimeout(() => videoPlayer.play(), 50);
           });
       });
+
+      // Attach an event listener to play the next video when the current one ends
+      if(!match) {
+        setTimeout(() => fetchAndPlayVideo(), pacing);
+      } 
     }
 
     // Function to fetch the video URL and start playing
     function fetchAndPlayVideo() {
-      fetch('/video')
-        .then(response => response.json())
-        .then(data => {
-          if (data.is_final) {
-            // If it's the final video, reload the page after a delay (optional)
-            setTimeout(() => location.reload(), 3000);
-          } else {
-            // If not the final video, play the video and fetch the next one after it ends
-            const videoPlayer = document.getElementById('video-player');
-            videoPlayer.addEventListener('ended', () => {
-              setTimeout(fetchAndPlayVideo, 1000); // Add a 1000ms delay before fetching the next video
-            });
 
-            playVideo(data.video_url);
-          }
-        })
-        .catch(error => {
-          console.error('Error fetching video:', error);
-          // Handle any error, you may want to reload the page or show an error message
-        });
+        const videoPlayer = document.getElementById('video-player');
+
+        if(intro) {
+          console.log("play intro 1");
+          videoPlayer.src = "static/vids/batch_x/network_intro_dark_fast.mp4";
+          pacing = 20000;
+          playVideo(videoPlayer.src, pacing, false);
+        } else if(b1 && started) {
+          const randomIndex = Math.floor(Math.random() * (vids_b1.length - 1));
+          const randomVideoUrl = vids_b1[randomIndex].file_name;
+          filename = "static/vids/batch_1/" + randomVideoUrl;
+          pacing = 3000;
+          playVideo(filename, pacing, false);
+        } else if(b2 && started) {
+          const randomIndex = Math.floor(Math.random() * (vids_b2.length - 1));
+          const randomVideoUrl = vids_b2[randomIndex].file_name;
+          filename = "static/vids/batch_2/" + randomVideoUrl;
+          pacing = 1500;
+          playVideo(filename, pacing, false);
+        } else if(b3 && started) {
+          const randomIndex = Math.floor(Math.random() * (vids_b3.length - 1));
+          const randomVideoUrl = vids_b3[randomIndex].file_name;
+          filename = "static/vids/batch_3/" + randomVideoUrl;
+          pacing = 1000;
+          playVideo(filename, pacing, false);
+        }
     }
 
     // Call the fetchAndPlayVideo function when the page loads
     document.addEventListener('DOMContentLoaded', () => {
       fetchAndPlayVideo();
     });
-  </script>
 
-  <script>
     // Access the webcam and stream video
     if ('mediaDevices' in navigator && 'getUserMedia' in navigator.mediaDevices) {
       const webcamVideo = document.getElementById('webcam-video');
@@ -85,14 +113,12 @@
           webcamVideo.srcObject = stream;
         })
         .catch(error => {
-          console.log('Unable to access the webcam:', error);
+          // console.log('Unable to access the webcam:', error);
         });
     } else {
-      console.log('Webcam access not supported');
+      // console.log('Webcam access not supported');
     }
-  </script>
 
-  <script>
     // Function to play the intro audio
     function playIntro() {
       // Hide the start button
@@ -103,8 +129,6 @@
         const transcriptsDiv = document.getElementById('transcript_11labs');
         transcriptsDiv.style.display = 'block';
 
-        // var myWindow = window.open("", "MsgWindow", "width=200,height=100");
-        // myWindow.document.write("<p>This is 'MsgWindow'. I am 200px wide and 100px tall!</p>");
       // Make a POST request to the "/intro" route
       fetch('/intro', {
         method: 'GET',
@@ -113,26 +137,66 @@
       .then(data => {
         // Handle the response data, assuming 'data' is an object containing the 'response_text' and 'is_final' fields
         const responseText = data.response_text;
-        // Log the received response text in the console
-        console.log('Received response text:', responseText);
-        document.getElementById('transcript_11labs').innerHTML = responseText;
+        audioUrl = data.audioUrl;
+        csv_array = data.csv_array;
+        csv_array_audio = data.csv_array_audio;
 
-        // If the response is not final, start the recognition
-        if (!data.is_final) {
-          startRec();
-        } else {
-          // Otherwise, the intro is done, and you can proceed to fetch and play videos
-          //fetchAndPlayVideo();
+        playAudio('static/audio/' + audioUrl);
+
+        for (let i = 1; i < csv_array.length; i++) {
+          const [file_name, batch, tags, note] = csv_array[i];
+
+          if (batch === 'b1') {
+            vids_b1.push({ file_name, tags });
+          } else if (batch === 'b2') {
+            vids_b2.push({ file_name, tags });
+          } else if (batch === 'b3') {
+            vids_b3.push({ file_name, tags });
+          }
         }
+
+        for (let i = 1; i < csv_array_audio.length; i++) {
+          const [file_name, batch, string, note] = csv_array_audio[i];
+
+          if (batch === 'b1') {
+            audio_b1.push({ file_name, string });
+          } else if (batch === 'b2') {
+            audio_b2.push({ file_name, string });
+          } else if (batch === 'b3') {
+            audio_b3.push({ file_name, string });
+          }
+        }
+      
+
+      b1 = data.b1;
+      // intro = data.intro
+    
+      document.getElementById('transcript_11labs').innerHTML = responseText;
       })
       .catch(error => {
         // Handle any errors that occurred during the AJAX request
         console.error('Error playing intro:', error);
       });
     }
-  </script>
 
-  <script>
+    function playAudio(audioUrl) {
+     //const audioUrl = 'path/to/your/audio.mp3'; // Replace with the actual URL of your audio file
+
+      const audio = new Audio(audioUrl);
+      audio.play();
+    
+      audio.addEventListener('ended', function () {
+        // This function will be called when the audio has ended
+        startRec();
+        if (!started) {
+          started = true; 
+          b1 = true;
+          intro = false
+        }
+        // Call your desired function here or add your logic.
+      });
+    }
+
     function startRec() {
       if ('webkitSpeechRecognition' in window) {
         const recognition = new webkitSpeechRecognition();
@@ -154,9 +218,41 @@
           const lastResult = event.results[event.results.length - 1];
           if (lastResult.isFinal) {
             isSpeaking = false;
-            if (inputField.value.trim() !== '') {
-              sendData();
+            if (inputField.value.trim() === 'start') { 
+              console.log('started')
               recognition.stop();
+              playAudio('static/audio/00_stream1.mp3');
+              document.getElementById('transcript_11labs').innerHTML = 'You see a stream';
+            }
+            if (started) {
+              if (inputField.value.trim() !== '') {
+                // sendData();
+                recognition.stop();
+                if(b1){
+                  playAudio('static/audio/' + audio_b1[b1_index].file_name);
+                  document.getElementById('transcript_11labs').innerHTML = audio_b1[b1_index].string;
+                  b1_index += 1;
+                  if( b1_index >= audio_b1.length) {
+                    b1 = false;
+                    b2 = true;
+                  }
+                } else if (b2) {
+                  playAudio('static/audio/' + audio_b2[b2_index].file_name);
+                  document.getElementById('transcript_11labs').innerHTML = audio_b2[b2_index].string;
+                  b2_index += 1;
+                  if( b2_index >= audio_b2.length) {
+                    b2 = false;
+                    b3 = true;
+                  }
+                } else if (b3) {
+                  playAudio('static/audio/' + audio_b3[b3_index].file_name);
+                  document.getElementById('transcript_11labs').innerHTML = audio_b3[b3_index].string;
+                  b3_index += 1;
+                  if( b3_index >= audio_b3.length) {
+                    b3 = false;
+                  }
+                }
+              }
             }
           } else {
             isSpeaking = true;
@@ -186,10 +282,21 @@
             .then(data => {
               // Handle the response data, assuming 'data' is an object containing the 'response_text' and 'is_final' fields
               const responseText = data.response_text;
-              // Log the received response text in the console
-              console.log('Received response text:', responseText);
-              document.getElementById('transcript_11labs').innerHTML = responseText;
+              b1 = data.b1;
+              b2 = data.b2;
+              b3 = data.b3;
 
+              // console.log('Is b1? :', b1);
+              // console.log('Is b2? :', b2);
+              // console.log('Is b3? :', b3);
+              // Log the received response text in the console
+              // console.log('Received response text:', responseText);
+
+              document.getElementById('transcript_11labs').innerHTML = responseText;
+              const matchingFiles = getMatchingFileName(responseText, vids_b1);
+              file = matchingFiles[Math.random(0, matchingFiles.length() - 1)]
+              console.log(file)
+              fetchAndPlayVideo(file, 2000, true);
               // Check if the response is final and act accordingly
               if (data.is_final) {
                 // Do something when the response is final, such as ending the recognition or resetting the form
@@ -199,7 +306,7 @@
               // Restart the recognition after the generated audio has finished streaming
               setTimeout(() => {
                 recognition.start();
-              }, 1000);
+              }, 800);
             })
             .catch(error => {
               // Handle any errors that occurred during the AJAX request
@@ -222,9 +329,32 @@
           }
         });
 
-        console.log("isSpeaking: " + isSpeaking)
+        // console.log("isSpeaking: " + isSpeaking)
       }
     }
+
+    function getMatchingFileName(response, vidsArray) {
+      const matchingFiles = [];
+      const wordsInResponse = response.toLowerCase().match(/\b\w+\b/g) || []; // Extract words from response
+      // console.log(wordsInResponse);
+
+      for (const item of vidsArray) {
+        const tags = item.tags.toLowerCase().split(', '); // Convert tags to lowercase and split by comma
+        const fileName = item.file_name;
+
+        for (const word of wordsInResponse) {
+          if (tags.includes(word)) {
+            // console.log('Found matching word : ' + word);
+            matchingFiles.push(fileName);
+            break; // Break out of the inner loop once a match is found
+          }
+        }
+      }
+      
+      // console.log('matching files : ' + matchingFiles)
+      return matchingFiles;
+    }
+
   </script>
 </body>
 
