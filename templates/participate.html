@@ -6,28 +6,45 @@
 <html>
 
 <body>
+
+  <!-- <header>
+    <h1><span>AYN-TYCHO</span> Corp.</h1> 
+    <nav>
+      <ul>
+        <li>STATION 23</li>
+        <li>SPACESHIP</li>
+        <li>TITAN</li>
+        <li>CREW</li>
+        <a id="nav_cta"><li>PARTICIPATE</li></a>
+      </ul>
+    </nav>
+  </header> -->
   
-  <div id="webcam-container">
-    <video id="webcam-video" autoplay="true"></video>
-    <canvas id="canvas"></canvas>
-  </div>
-
-  <div id="vid-container">
-    <video id="video-player2" muted="true" autoplay="true" playsinline="true"></video>
-    <video id="video-player" muted="true" autoplay="true" playsinline="true"></video>
-  </div>
-
   <form id="speech-form" enctype="multipart/form-data">
     <label for="text-input">Enter your text input:</label><br>
     <input type="text" id="text-input" name="text-input" required><br>
     <br>
     <input type="submit" value="Submit">
   </form>
-    <button id="start_button" role="button" onClick="playIntro()">Enter</button>
--  <div class="transcripts">
-    <p id="transcript"></p>
-    <p id="transcript_11labs"></p>
-  </div>
+  <section class="container register">
+    <div class="transcripts">
+      <p id="transcript"></p>
+      <p id="transcript_11labs"></p>
+    </div>
+
+    <div id="webcam-container">
+      <video id="webcam-video" autoplay="true"></video>
+      <canvas id="canvas"></canvas>
+    </div>
+  
+    <div id="vid-container">
+      <video id="video-player" muted="true" autoplay="true" playsinline="true"></video>
+      <video id="video-player2" muted="true" autoplay="true" playsinline="true" src="static/vids/batch_x/network_intro_dark_fast.mp4"></video>
+    </div>
+  </section>
+  
+    <!-- <button id="start_button" role="button" onClick="playIntro()">Enter</button> -->
+
 
   <script>
     let vids_b1 = []
@@ -71,13 +88,13 @@
     function fetchAndPlayVideo() {
 
         const videoPlayer = document.getElementById('video-player');
-
-        if(intro) {
-          console.log("play intro 1");
-          videoPlayer.src = "static/vids/batch_x/network_intro_dark_fast.mp4";
-          pacing = 20000;
-          playVideo(videoPlayer.src, pacing, false);
-        } else if(b1) {
+        console.log("play video")
+        // if(intro) {
+        //   videoPlayer.src = "static/vids/batch_x/network_intro_dark_fast.mp4";
+        //   pacing = 20000;
+        //   playVideo(videoPlayer.src, pacing, false);
+        
+        if(b1) {
           const randomIndex = Math.floor(Math.random() * (vids_b1.length - 1));
           const randomVideoUrl = vids_b1[randomIndex].file_name;
           filename = "static/vids/batch_1/" + randomVideoUrl;
@@ -100,7 +117,8 @@
 
     // Call the fetchAndPlayVideo function when the page loads
     document.addEventListener('DOMContentLoaded', () => {
-      fetchAndPlayVideo();
+      playIntro();
+      // fetchAndPlayVideo();
     });
 
     // Access the webcam and stream video
@@ -123,8 +141,6 @@
     // Function to play the intro audio
     function playIntro() {
       // Hide the start button
-        const startButton = document.getElementById('start_button');
-        startButton.style.display = 'none';
 
         // Show the transcript paragraph
         const transcriptsDiv = document.getElementById('transcript_11labs');
@@ -189,11 +205,7 @@
       audio.addEventListener('ended', function () {
         // This function will be called when the audio has ended
         startRec();
-        if (started) {
-          // started = true; 
-          b1 = true;
-          intro = false
-        }
+        
         // Call your desired function here or add your logic.
       });
     }
@@ -220,26 +232,36 @@
           if (lastResult.isFinal) {
             isSpeaking = false;
             if(!started) {
-              if (inputField.value.trim() === 'start') { 
+              if (inputField.value.trim() === 'start' || inputField.value.trim() === 'stop' ) { 
                 started = true;
-                console.log('started')
+                b1 = true;
+                intro = false;
+                console.log('started');
+                document.getElementById('video-player2').style.display = "none";
                 recognition.stop();
                 playAudio('static/audio/00_stream1.mp3');
                 document.getElementById('transcript_11labs').innerHTML = 'You see a stream';
+                fetchAndPlayVideo();
               }
             } else {
             
               if (inputField.value.trim() !== '') {
                   recognition.stop();
                   if(b1){
+                    console.log("b1_index: ", b1_index, "audio_b1.length: ", audio_b1.length)
                     playAudio('static/audio/' + audio_b1[b1_index].file_name);
                     document.getElementById('transcript_11labs').innerHTML = audio_b1[b1_index].string;
+                    console.log(b1)
+                    console.log(b2)
                     b1_index += 1;
-                    if( b1_index >= (audio_b1.length -1)) {
+                    if( b1_index >= (audio_b1.length)) {
+                      
                       b1 = false;
                       b2 = true;
                     }
+                    
                   } else if (b2) {
+                    console.log("starting b2")
                     playAudio('static/audio/' + audio_b2[b2_index].file_name);
                     document.getElementById('transcript_11labs').innerHTML = audio_b2[b2_index].string;
                     b2_index += 1;

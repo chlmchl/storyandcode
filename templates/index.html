@@ -14,7 +14,7 @@
         <li>SPACESHIP</li>
         <li>TITAN</li>
         <li>CREW</li>
-        <a id="nav_cta" href="{{ url_for('participate') }}" method="POST"><li>PARTICIPATE</li></a>
+        <a id="nav_cta"><li>PARTICIPATE</li></a>
       </ul>
     </nav>
   </header>
@@ -22,15 +22,21 @@
   
   <section class="container">
     <div class="call-to-participate">
-        <h2>Join the AI Assistant Training Program</h2>
+        <h2>Join the House of Saturn <br>AI Training Program</h2>
         <p>
-            AYN-TYCHO Corp. is seeking skilled individuals to participate in the training of our advanced AI assistant.
-            This AI will accompany astronauts on their mission to space, assisting them in various tasks during their journey.
-            Be a part of this groundbreaking opportunity and shape the future of space exploration.
-        </p>
-        <a href="{{ url_for('participate') }}" method="POST" class="cta-button">Get Involved</a>
+            AYN-TYCHO Corp. is seeking skilled individuals to participate in the training of our state-of-the-art AYN-TYCHO AI system.
+            AYN-TYCHO AI system will accompany astronauts on their mission to Titan, guaranteeing that they remain at the peak of their cognitive prowess.
+            <br><br>
+            As we embark on this groundbreaking expedition, we call upon all people from the confort of their home to join hands in training and refining the AYN-TYCHO AI system.
+            <br><br>
+            <span style="font-size: 10px;">By clicking on 'start training', you agree to our <a href="" id="terms" onclick="openPopup()">terms and conditions</a>.</span>
+          </p>
+          
+          <a href="{{ url_for('participate') }}" method="POST" class="cta-button">Start training</a>
     </div>
   </section>
+
+
 </body>
 
 </html>

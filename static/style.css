@@ -1,7 +1,11 @@
 a {
     text-transform: none;
     text-decoration: none;
-    color: black;
+}
+
+#terms {
+    font-size: 10px;
+    color: lightblue;
 }
 
 body {
@@ -92,6 +96,11 @@ h1 span{
     animation-iteration-count: infinite;
 }
 
+.container.register {
+    background-image: none;
+    background-color: #000;
+}
+
 @keyframes MOVE-BG {
     from {
         background-size: 150%;
@@ -102,15 +111,17 @@ h1 span{
  }
 
 
-.call-to-participate {
+.call-to-participate{
     padding: 150px 0;
     margin: 0 80px 0 175px;
 }
 
-.call-to-participate h2 {
+.call-to-participate h2{
     font-size: 28px;
     margin-bottom: 20px;
     text-transform: uppercase;
+    opacity: 0;
+    animation: appear 1s 0s forwards ease;
 }
 
 .call-to-participate p {
@@ -118,8 +129,19 @@ h1 span{
     line-height: 1.6;
     margin-bottom: 30px;
     width: 50%;
+    opacity: 0;
+    animation: appear 1s 0.5s forwards ease;
 }
-
+@keyframes appear {
+    from {
+        transform: translateY(30px);
+        opacity: 0%;
+    }
+    to { 
+        transform: translateY(0px);
+        opacity: 100%;
+    }
+ }
 .cta-button {
     display: inline-block;
     background-color: transparent;
@@ -129,8 +151,9 @@ h1 span{
     border: #fff 1px solid;
     text-decoration: none;
     font-size: 12px;
-    overflow: hidden; /* Hide overflowing content */
-    
+    overflow: hidden; /* Hide overflowing content */  
+    opacity: 0;
+    animation: appear 1s 0.9s forwards ease; 
 }
 
 .cta-button {
@@ -148,7 +171,7 @@ h1 span{
     position: relative;
     overflow: hidden;
     z-index: 100;
-  }
+  } 
     .cta-button::before {
     background: #FFF;
     content: "";
@@ -181,6 +204,7 @@ h1 span{
     transform-origin: bottom center;
   }
 
+
 #webcam-video{
     position: fixed;
     z-index: 100;
@@ -193,7 +217,7 @@ h1 span{
     object-fit: cover;
 }
 
-#video-player{
+#video-player, #video-player2{
     position: absolute;
     top: 0;
     left: 0;
@@ -206,18 +230,19 @@ h1 span{
     position: fixed;
     width: 100vw;
     height: 100vh;
+    margin-bottom: 50px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
-    font-family: 'Times New Roman', Times, serif;
     flex-direction: column;
+    font-size: 14px;
+    z-index: 1000;
 }
 
 #transcript, #transcript_11labs {
-    width: 60vw;
+    width: 50vw;
     bottom: 10px;
     color: lightgray;
-    font-size: 34px;
     text-align: center;
 }
 
