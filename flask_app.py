@@ -65,10 +65,10 @@ def participate():
 def intro():
     global string_index, b1, intro, video_files_b1, video_files_b2, video_files_b3, video_files_x, csv_array, csv_array_audio
 
-    csv_file_path = directory + '/static/vids_lst.csv'
+    csv_file_path = directory + '/storyandcode/static/vids_lst.csv'
     csv_array = read_csv_to_array(csv_file_path, csv_array)
 
-    csv_file_path = directory + '/static/audio_lst.csv'
+    csv_file_path = directory + '/storyandcode/static/audio_lst.csv'
     csv_array_audio = read_csv_to_array(csv_file_path, csv_array_audio)
 
     print("CSV array with nested arrays:", csv_array_audio)
