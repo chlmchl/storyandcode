@@ -7,7 +7,7 @@ import random
 import csv
 
 set_api_key("d33a219d3324143b9d803a9e4bec5480")
-openai.api_key = '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' 
+openai.api_key = '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'
 
 app = Flask(__name__)
 # CORS(app)
@@ -30,6 +30,7 @@ video_files_x = []
 started = False
 csv_array = []
 csv_array_audio = []
+audioUrl = ''
 
 directory = os.getcwd()
 
@@ -53,17 +54,17 @@ def read_csv_to_array(csv_file, csv_array):
 #         session['current_video_index'] = 0
 
 @app.route('/')
-def index():   
+def index():
     return render_template('index.html')
 
 @app.route('/participate', methods=['POST', 'GET'])
-def participate():   
+def participate():
     return render_template('participate.html')
 
 
 @app.route ('/intro', methods=['POST', 'GET'])
 def intro():
-    global string_index, b1, intro, video_files_b1, video_files_b2, video_files_b3, video_files_x, csv_array, csv_array_audio
+    global string_index, b1, intro, video_files_b1, video_files_b2, video_files_b3, video_files_x, csv_array, csv_array_audio, audioUrl
 
     csv_file_path = directory + '/storyandcode/static/vids_lst.csv'
     csv_array = read_csv_to_array(csv_file_path, csv_array)
@@ -84,7 +85,7 @@ def intro():
         # stream(audio_stream)
 
         intro = False
-       
+
     return jsonify({'response_text': response_text,'audioUrl': audioUrl, 'intro': intro, 'b1': b1, 'csv_array': csv_array, 'csv_array_audio' :csv_array_audio, 'is_final': False})
 
 
@@ -146,24 +147,24 @@ def intro():
 #             response = openai.Completion.create(
 #                 engine='davinci:ft-personal:test-dv-2023-06-27-09-32-44',  # Choose the appropriate ChatGPT engine
 #                 # model="gpt-3.5-turbo",
-#                 # messages=[{"role": "system", "content":"You're a hypnotist trying rapid fire conversation where the user has to answer to a surrealist and abstract affirmations with the first things that comes to mind"}, 
-#                 #           {"role": "assistant", "content":"You see a stream."}, 
+#                 # messages=[{"role": "system", "content":"You're a hypnotist trying rapid fire conversation where the user has to answer to a surrealist and abstract affirmations with the first things that comes to mind"},
+#                 #           {"role": "assistant", "content":"You see a stream."},
 #                 #           {"role": "user", "content":"I see a stream"},
-#                 #           {"role": "assistant", "content":"Is the stream calm or turbulent?"}, 
+#                 #           {"role": "assistant", "content":"Is the stream calm or turbulent?"},
 #                 #           {"role": "user", "content":"Calm"},
-#                 #           {"role": "assistant", "content":"What color is the water in the stream"}, 
+#                 #           {"role": "assistant", "content":"What color is the water in the stream"},
 #                 #           {"role": "user", "content":"The water is blue"},
-#                 #           {"role": "assistant", "content":"there are fish swimming in the stream"}, 
-#                 #           {"role": "user", "content":"Goldfish"}, 
-#                 #           {"role": "assistant", "content":"Tranquility and serenity"}, 
+#                 #           {"role": "assistant", "content":"there are fish swimming in the stream"},
+#                 #           {"role": "user", "content":"Goldfish"},
+#                 #           {"role": "assistant", "content":"Tranquility and serenity"},
 #                 #           {"role": "user", "content":"Peace"},
-#                 #           {"role": "assistant", "content":"A hidden treasure waiting to be discovered"}, 
-#                 #           {"role": "user", "content":"Rich"}, 
-#                 #           {"role": "assistant", "content":"Fairies, unicorns, and talking trees"}, 
-#                 #           {"role": "user", "content":"Fairytale"}, 
-#                 #           {"role": "assistant", "content":"A vial of sparkling water that grants eternal youth"}, 
+#                 #           {"role": "assistant", "content":"A hidden treasure waiting to be discovered"},
+#                 #           {"role": "user", "content":"Rich"},
+#                 #           {"role": "assistant", "content":"Fairies, unicorns, and talking trees"},
+#                 #           {"role": "user", "content":"Fairytale"},
+#                 #           {"role": "assistant", "content":"A vial of sparkling water that grants eternal youth"},
 #                 #           {"role": "user", "content":"Eternal"},
-#                 #           {"role": "assistant", "content":"The stream is a portal"}, 
+#                 #           {"role": "assistant", "content":"The stream is a portal"},
 #                 #           {"role": "user", "content":"Ethereal"}],
 #                 prompt=text_input,
 #                 max_tokens=30,  # Adjust the response length as desired
@@ -180,11 +181,11 @@ def intro():
 #                 stream=True
 #             )
 #             stream(audio_stream)
-            
+
 #             return jsonify({'response_text': response_text, 'is_final': False})
 
 #     return jsonify({'response_text': '', 'b1': b1, 'b2': b2, 'b3': b3, 'is_final': True})
-    
+
 if __name__ == '__main__':
     app.run()
 
