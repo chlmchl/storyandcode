@@ -1,5 +1,7 @@
 let randomVideoUrl = ''
 let oldMatchingFiles = ''
+let matchingFiles = ''
+
 // Function to set the video source and start playing
 function playVideo (filename, pacing, match) {
   const videoPlayer = document.getElementById('video-player')
@@ -22,7 +24,7 @@ function playVideo (filename, pacing, match) {
 function fetchAndPlayVideo () {
   if (b1) {
     // Call getMatchingFileName() and store the result in a variable
-    let matchingFiles = getMatchingFileName(vids_b1)
+    matchingFiles = getMatchingFileName(vids_b1)
     if(matchingFiles.toString() === oldMatchingFiles.toString()) {
       matchingFiles = ''
     }
@@ -42,7 +44,7 @@ function fetchAndPlayVideo () {
     pacing = 3000
     playVideo(filename, pacing, false)
   } else if (b2) {
-    let matchingFiles = getMatchingFileName(vids_b2)
+    matchingFiles = getMatchingFileName(vids_b2)
     if(matchingFiles.toString() === oldMatchingFiles.toString()) {
       matchingFiles = ''
     }
@@ -63,7 +65,7 @@ function fetchAndPlayVideo () {
     playVideo(filename, pacing, false)
   } else if (b3) {
      // Call getMatchingFileName() and store the result in a variable
-     let matchingFiles = getMatchingFileName(vids_b3)
+     matchingFiles = getMatchingFileName(vids_b3)
      if(matchingFiles.toString() === oldMatchingFiles.toString()) {
        matchingFiles = ''
      }

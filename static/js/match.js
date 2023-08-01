@@ -17,6 +17,6 @@ function getMatchingFileName (vidsArray) {
       }
     }
   
-    //console.log('matching files : ' + matchingFiles)
+    console.log('matching files : ' + matchingFiles)
     return matchingFiles
   }
