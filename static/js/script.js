@@ -77,7 +77,6 @@ function playIntro () {
     })
 }
 
-
 // Access the webcam and stream video
 if ('mediaDevices' in navigator && 'getUserMedia' in navigator.mediaDevices) {
   const webcamVideo = document.getElementById('webcam-video')
@@ -95,7 +94,6 @@ if ('mediaDevices' in navigator && 'getUserMedia' in navigator.mediaDevices) {
 } else {
   // console.log('Webcam access not supported');
 }
-
 
 function startRec () {
   if ('webkitSpeechRecognition' in window) {
@@ -130,6 +128,7 @@ function startRec () {
             document.getElementById('video-player2').style.display = 'none'
             recognition.stop()
             playAudio('static/audio/00_stream1.mp3')
+
             document.getElementById('transcript_11labs').innerHTML =
               'You see a stream'
             fetchAndPlayVideo()
@@ -145,11 +144,13 @@ function startRec () {
                 audio_b1.length
               )
               playAudio('static/audio/' + audio_b1[b1_index].file_name)
+              
               document.getElementById('transcript_11labs').innerHTML =
                 audio_b1[b1_index].string
               console.log(b1)
-              console.log(b2)
+              // console.log(b2)
               b1_index += 1
+            
               if (b1_index >= audio_b1.length) {
                 b1 = false
                 b2 = true
@@ -195,12 +196,10 @@ function startRec () {
 }
 
 function playAudio (audioUrl) {
-    const audio = new Audio(audioUrl)
-    audio.play()
-  
-    audio.addEventListener('ended', function () {
-      startRec()
-    })
-  }
+  const audio = new Audio(audioUrl)
+  audio.play()
 
-
+  audio.addEventListener('ended', function () {
+    startRec()
+  })
+}

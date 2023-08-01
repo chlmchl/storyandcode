@@ -29,9 +29,19 @@
             <br><br>
             As we embark on this groundbreaking expedition, we call upon all people from the confort of their home to join hands in training and refining the AYN-TYCHO AI system.
             <br><br>
+            
+            <span style="font-size: 10px;">By clicking on 'start training', you agree to our <a href="" id="terms" onclick="openPopup()">terms and conditions</a>.</span>
           </p>
-
-          <a href="{{ url_for('register') }}" method="POST" class="cta-button">Start training</a>
+          <form action="/participate" method="POST">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+            <br>
+            <span style="font-size: 10px;"><input type="checkbox" id="agree" name="agree" required>
+            <label for="agree">I agree to the <a href="" id="terms" onclick="openPopup()">terms and conditions</a></label></span>
+            <br>
+            <input type="submit" value="Start training" class="cta-button">
+          </form>
+          
     </div>
   </section>
 
@@ -39,3 +49,5 @@
 </body>
 
 </html>
+
+
