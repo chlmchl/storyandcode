@@ -3,7 +3,7 @@ let oldMatchingFiles = ''
 let matchingFiles = ''
 
 // Function to set the video source and start playing
-function playVideo (filename, pacing) {
+function playVideo (filename, pacing, loop) {
   const videoPlayer = document.getElementById('video-player')
   videoPlayer.src = filename
 
@@ -15,8 +15,9 @@ function playVideo (filename, pacing) {
   })
 
   // Attach an event listener to play the next video when the current one ends
-  
+  if(loop) {
     setTimeout(() => fetchAndPlayVideo(), pacing)
+  }
   
 }
 
@@ -26,17 +27,17 @@ function fetchAndPlayVideo () {
     checkForMatch(vids_b1)
     filename = 'static/vids/batch_1/' + randomVideoUrl
     pacing = 3000
-    playVideo(filename, pacing)
+    playVideo(filename, pacing, false)
   } else if (b2) {
     checkForMatch(vids_b2)
     filename = 'static/vids/batch_2/' + randomVideoUrl
-    pacing = 1200
-    playVideo(filename, pacing)
+    pacing = 2000
+    playVideo(filename, pacing, true)
   } else if (b3) {
       checkForMatch(vids_b3)
      filename = 'static/vids/batch_3/' + randomVideoUrl
-     pacing = 1000
-     playVideo(filename, pacing)
+     pacing = 1500
+     playVideo(filename, pacing, true)
   }
 }
 

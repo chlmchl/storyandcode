@@ -1,27 +1,27 @@
-file_name; batch; string;
-00_stream.mp3;b1; You see a stream… Is the stream warm or cold?;
-02_road.mp3;b1; You see a road… Is the road straight or curved?;
-03_forest.mp3;b1;You see a forest... Is the forest living or dead?;
-04_people.mp3;b1;You see people... are the people happy or sad?;
-05_candle.mp3;b1; A candle is made of brass or wax?;
-06_elephant.mp3;b2;If I say Elephant, you think of ...?;
-07_tidal.mp3;b2; Tidal;
-08_carpentry.mp3;b2; Carpentry;
-09_growth.mp3;b2;Growth;
-10_bread.mp3;b2;Bread;
-11_cellular.mp3;b2;Cellular;
-12_darkness.mp3;b2;Darkness;
-13_protest.mp3;b2;Protest;
-14_berries.mp3;b2; There are no more berries;
-15_fall.mp3;b2;The Fall;
-16_whatbringsyouin.mp3;b3;And what brings you in today?;
-17_feel.mp3;b3; And how does that make you feel?;
-18_Wind_shadow.mp3;b3;I am the wind... you are the shadow.;
-19_howdoyoufeel.mp3;b3;How do you feel?;
-20_mine.mp3;b3;I am not mine…;
-21_yours.mp3;b3;You are not yours.;
-22_feel.mp3;b3; How does that make you feel?;
-24_feel.mp3;b3; How does that make you feel?;
-25_assess-reject.mp3;b3;Assess. Reject.;
-26_end.mp3;b3;End session;
-27_thankyou.mp3;b3;Thank you for your training today.;
+file_name, batch, string,
+00_stream.mp3,b1, You see a stream… Is the stream warm or cold?,
+02_road.mp3,b1, You see a road… Is the road straight or curved?,
+03_forest.mp3,b1,You see a forest... Is the forest living or dead?,
+04_people.mp3,b1,You see people... are the people happy or sad?,
+05_candle.mp3,b1, A candle is made of brass or wax?,
+06_elephant.mp3,b2,If I say Elephant, you think of ...?,
+07_tidal.mp3,b2, Tidal,
+08_carpentry.mp3,b2, Carpentry,
+09_growth.mp3,b2,Growth,
+10_bread.mp3,b2,Bread,
+11_cellular.mp3,b2,Cellular,
+12_darkness.mp3,b2,Darkness,
+13_protest.mp3,b2,Protest,
+14_berries.mp3,b2, There are no more berries,
+15_fall.mp3,b2,The Fall,
+16_whatbringsyouin.mp3,b3,And what brings you in today?,
+17_feel.mp3,b3, And how does that make you feel?,
+18_Wind_shadow.mp3,b3,I am the wind... you are the shadow.,
+19_howdoyoufeel.mp3,b3,How do you feel?,
+20_mine.mp3,b3,I am not mine…,
+21_yours.mp3,b3,You are not yours.,
+22_feel.mp3,b3, How does that make you feel?,
+24_feel.mp3,b3, How does that make you feel?,
+25_assess-reject.mp3,b3,Assess. Reject.,
+26_end.mp3,b3,End session,
+27_thankyou.mp3,b3,Thank you for your training today.,

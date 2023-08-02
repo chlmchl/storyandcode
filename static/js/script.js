@@ -2,6 +2,7 @@ let vids_b1 = []
 let vids_b2 = []
 let vids_b3 = []
 let vids_x = []
+let vids_montage = ['static/vids/batch_montage/Montage_1.mp4',' static/vids/batch_montage/Montage_2.mp4', 'static/vids/batch_montage/Montage_3.mp4', 'static/vids/batch_montage/Montage_4.mp4', 'static/vids/batch_montage/Montage_5.mp4']
 
 let audio_b1 = []
 let audio_b2 = []
@@ -13,7 +14,7 @@ let b2 = false
 let b3 = false
 let started = false
 
-let b1_index = 0
+let b1_index = -1
 let b2_index = 0
 let b3_index = 0
 
@@ -24,8 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Function to play the intro audio
 function playIntro () {
-  // Hide the start button
-
   // Show the transcript paragraph
   const transcriptsDiv = document.getElementById('transcript_11labs')
   transcriptsDiv.style.display = 'block'
@@ -37,7 +36,6 @@ function playIntro () {
     .then(response => response.json())
     .then(data => {
       // Handle the response data, assuming 'data' is an object containing the 'response_text' and 'is_final' fields
-      const responseText = data.response_text
       audioUrl = data.audioUrl
       csv_array = data.csv_array
       csv_array_audio = data.csv_array_audio
@@ -45,7 +43,12 @@ function playIntro () {
       //console.log(csv_array)
 
       playAudio('static/audio/' + audioUrl)
+      document.getElementById('transcript_11labs').innerHTML = 'Welcome to the Ayn-Tycho corporation baseline test for interplanetary missions.'
+      setTimeout(() => document.getElementById('transcript_11labs').innerHTML = "There are no wrong answers.", 4500)
+      setTimeout(() => document.getElementById('transcript_11labs').innerHTML = "Please respond naturally with simple word associations to what you hear and see to achieve your baseline.", 6500)
+      setTimeout(() => document.getElementById('transcript_11labs').innerHTML = 'To initiate say "start"', 12000)
 
+    
       for (let i = 1; i < csv_array.length; i++) {
         const [file_name, batch, tags, note] = csv_array[i]
 
@@ -73,7 +76,7 @@ function playIntro () {
 
       b1 = data.b1
 
-      document.getElementById('transcript_11labs').innerHTML = responseText
+      
     })
     .catch(error => {
       console.error('Error playing intro:', error)
@@ -128,39 +131,36 @@ function startRec () {
             b1 = true
             intro = false
             console.log('started')
+
             document.getElementById('video-player2').style.display = 'none'
             recognition.stop()
-            filename = 'static/vids/batch_montage/Montage_1.mp4'
-            playVideo(filename, 1000)
+            filename = vids_montage[0]
+            playVideo(filename, 1000, false)
             
-            setTimeout(() => playAudio('static/audio/00_stream.mp3'), 2000)
+            setTimeout(() => playAudio('static/audio/00_stream.mp3'), 1500)
 
             setTimeout(() => document.getElementById('transcript_11labs').innerHTML =
-              'You see a stream', 2000)
+              'You see a stream', 1500)
+            
+            setTimeout(() => fetchAndPlayVideo(), 2000)
 
             setTimeout(() => document.getElementById('transcript_11labs').innerHTML =
-              'Is the stream warm or cold?', 3000)
+              'Is the stream warm or cold?', 2500)
             //fetchAndPlayVideo()
           }
         } else {
           if (inputField.value.trim() !== '') {
             recognition.stop()
             if (b1) {
-              console.log(
-                'b1_index: ',
-                b1_index,
-                'audio_b1.length: ',
-                audio_b1.length
-              )
-              playAudio('static/audio/' + audio_b1[b1_index].file_name)
-              
-              document.getElementById('transcript_11labs').innerHTML =
-                audio_b1[b1_index].string
+              b1_index += 1
+              playVideo(vids_montage[b1_index + 1], 1000, false)
+              setTimeout(() => playAudio('static/audio/' + audio_b1[b1_index].file_name), 1500)
+              setTimeout(() => document.getElementById('transcript_11labs').innerHTML = audio_b1[b1_index].string, 1500)
+              setTimeout(() => fetchAndPlayVideo(), 2000)
               // console.log(b1)
               // console.log(b2)
-              b1_index += 1
-            
-              if (b1_index >= audio_b1.length) {
+              
+              if (b1_index >= audio_b1.length - 1) {
                 b1 = false
                 b2 = true
               }
