@@ -142,7 +142,7 @@ h1 span{
         opacity: 100%;
     }
  }
-.cta-button {
+.cta-button, input.cta-button {
     display: inline-block;
     background-color: transparent;
     color: #fff;
@@ -156,7 +156,7 @@ h1 span{
     animation: appear 1s 0.9s forwards ease; 
 }
 
-.cta-button {
+.cta-button, input.cta-button  {
     color: #FFF;
     background: transparent;
     text-decoration: none;
@@ -172,23 +172,23 @@ h1 span{
     overflow: hidden;
     z-index: 100;
   } 
-    .cta-button::before {
+    .cta-button::before, input.cta-button::before {
     background: #FFF;
     content: "";
     position: absolute;
     z-index: -1;
   }
-    .cta-button::after {
+    .cta-button::after, input.cta-button::after {
     background: #FFF;
     content: "";
     position: absolute;
     z-index: -1;
   }
-    .cta-button:hover {
+    .cta-button:hover, input.cta-button:hover {
     color: #000;
     cursor: pointer;
   }
-  .cta-button::after {
+  .cta-button::after, input.cta-button::after {
     height: 100%;
     left: 0;
     top: 0;
@@ -197,7 +197,7 @@ h1 span{
     transform: scale3d(1, 0, 1);
     transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
   }
-  .cta-button:hover::after {
+  .cta-button:hover::after, input.cta-button:hover::after {
     height: 100%;
     width: 100%;
     transform: scale3d(1, 1, 1);
@@ -208,7 +208,7 @@ h1 span{
 .form-section {
     padding: 50px 0;
     margin: 0 80px 0 175px;
-}
+}x
 
 .form-section h2 {
     font-size: 28px;

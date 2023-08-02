@@ -15,7 +15,7 @@ app = Flask(__name__)
 # Set a secret key for the Flask application
 app.secret_key = os.urandom(24)
 
-string_intro = 'Welcome to the Ayn-Tycho corporation baseline test for off-world training. Please respond naturally with simple associations to what you hear and see to achieve your baseline and move to the next phase of training. To initiate say "start"'
+string_intro = 'Welcome to the Ayn-Tycho corporation baseline test for interplanetary missions. There are no wrong answers. Please respond naturally with simple word associations to what you hear and see to achieve your baseline. To initiate say "start"'
 string_list_b1 = ['You see a stream.', '', 'Is the stream warm or cold?', 'You see a road.', 'Is the road straight or curved?', 'A candle is made of brass or wax?']
 string_list_b2 = ['I am the wind... I am the shadow.', 'This is not my chair.', 'You see a tree', 'Carpentry', 'Elephant.', 'Tidal.', 'There are no more berries.']
 string_index = 0

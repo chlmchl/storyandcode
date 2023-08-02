@@ -42,6 +42,8 @@ function playIntro () {
       csv_array = data.csv_array
       csv_array_audio = data.csv_array_audio
 
+      //console.log(csv_array)
+
       playAudio('static/audio/' + audioUrl)
 
       for (let i = 1; i < csv_array.length; i++) {
@@ -49,6 +51,7 @@ function playIntro () {
 
         if (batch === 'b1') {
           vids_b1.push({ file_name, tags })
+          console.log(vids_b1)
         } else if (batch === 'b2') {
           vids_b2.push({ file_name, tags })
         } else if (batch === 'b3') {
@@ -127,11 +130,17 @@ function startRec () {
             console.log('started')
             document.getElementById('video-player2').style.display = 'none'
             recognition.stop()
-            playAudio('static/audio/00_stream1.mp3')
+            filename = 'static/vids/batch_montage/Montage_1.mp4'
+            playVideo(filename, 1000)
+            
+            setTimeout(() => playAudio('static/audio/00_stream.mp3'), 2000)
 
-            document.getElementById('transcript_11labs').innerHTML =
-              'You see a stream'
-            fetchAndPlayVideo()
+            setTimeout(() => document.getElementById('transcript_11labs').innerHTML =
+              'You see a stream', 2000)
+
+            setTimeout(() => document.getElementById('transcript_11labs').innerHTML =
+              'Is the stream warm or cold?', 3000)
+            //fetchAndPlayVideo()
           }
         } else {
           if (inputField.value.trim() !== '') {
@@ -147,7 +156,7 @@ function startRec () {
               
               document.getElementById('transcript_11labs').innerHTML =
                 audio_b1[b1_index].string
-              console.log(b1)
+              // console.log(b1)
               // console.log(b2)
               b1_index += 1
             
@@ -156,7 +165,7 @@ function startRec () {
                 b2 = true
               }
             } else if (b2) {
-              console.log('starting b2')
+              //console.log('starting b2')
               playAudio('static/audio/' + audio_b2[b2_index].file_name)
               document.getElementById('transcript_11labs').innerHTML =
                 audio_b2[b2_index].string
