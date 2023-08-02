@@ -49,6 +49,8 @@ function sayMyName () {
 
 // Function to play the intro audio
 function playIntro () {
+  const transcriptsDiv = document.getElementById('transcript_11labs')
+  transcriptsDiv.style.display = 'block'
   // Make a POST request to the "/intro" route
   fetch('/intro', {
     method: 'POST'
