@@ -26,15 +26,29 @@ let b3_index = 0
 
 // Call the fetchAndPlayVideo function when the page loads
 document.addEventListener('DOMContentLoaded', () => {
-  playIntro()
+  sayMyName()
 })
 
-// Function to play the intro audio
-function playIntro () {
+function sayMyName () {
   // Show the transcript paragraph
   const transcriptsDiv = document.getElementById('transcript_11labs')
   transcriptsDiv.style.display = 'block'
 
+  fetch('/generate', {
+    method: 'POST'
+  })
+    .then(response => response.json())
+    .then(data => {
+      response_text = data.response_text
+      document.getElementById('transcript_11labs').innerHTML =
+        'AI: ' + response_text
+
+      setTimeout(() => playIntro(), 1200)
+    })
+}
+
+// Function to play the intro audio
+function playIntro () {
   // Make a POST request to the "/intro" route
   fetch('/intro', {
     method: 'POST'
@@ -50,23 +64,25 @@ function playIntro () {
 
       playAudio('static/audio/' + audioUrl)
       document.getElementById('transcript_11labs').innerHTML =
+        'AI: ' +
         'Welcome to the Ayn-Tycho corporation baseline test for interplanetary missions.'
       setTimeout(
         () =>
           (document.getElementById('transcript_11labs').innerHTML =
-            'There are no wrong answers.'),
+            'AI: ' + 'There are no wrong answers.'),
         4500
       )
       setTimeout(
         () =>
           (document.getElementById('transcript_11labs').innerHTML =
+            'AI: ' +
             'Please respond naturally with simple word associations to what you hear and see to achieve your baseline.'),
         6500
       )
       setTimeout(
         () =>
           (document.getElementById('transcript_11labs').innerHTML =
-            'To initiate say "start"'),
+            'AI: ' + 'To initiate say "start"'),
         12000
       )
 
@@ -135,7 +151,7 @@ function startRec () {
     recognition.onresult = function (event) {
       const transcript = event.results[event.results.length - 1][0].transcript
       inputField.value = transcript
-      document.getElementById('transcript').innerHTML = transcript
+      document.getElementById('transcript').innerHTML = 'You: ' + transcript
 
       // Check for silence or pauses in speech
       const lastResult = event.results[event.results.length - 1]
@@ -160,7 +176,7 @@ function startRec () {
             setTimeout(
               () =>
                 (document.getElementById('transcript_11labs').innerHTML =
-                  'You see a stream'),
+                  'AI: ' + 'You see a stream'),
               1500
             )
 
@@ -169,7 +185,7 @@ function startRec () {
             setTimeout(
               () =>
                 (document.getElementById('transcript_11labs').innerHTML =
-                  'Is the stream warm or cold?'),
+                  'AI: ' + 'Is the stream warm or cold?'),
               2500
             )
             //fetchAndPlayVideo()
@@ -187,7 +203,7 @@ function startRec () {
               setTimeout(
                 () =>
                   (document.getElementById('transcript_11labs').innerHTML =
-                    audio_b1[b1_index].string),
+                    'AI: ' + audio_b1[b1_index].string),
                 1500
               )
               setTimeout(() => fetchAndPlayVideo(), 2000)
@@ -204,7 +220,8 @@ function startRec () {
               recognition.stop()
               //console.log('starting b2')
               playAudio('static/audio/' + audio_b2[b2_index].file_name)
-              document.getElementById('transcript_11labs').innerHTML = audio_b2[b2_index].string
+              document.getElementById('transcript_11labs').innerHTML =
+                'AI: ' + audio_b2[b2_index].string
               b2_index += 1
               if (b2_index >= audio_b2.length) {
                 b2 = false
@@ -212,13 +229,17 @@ function startRec () {
               }
             }
           } else if (b3) {
-            document.getElementById('transcript').style.display = "none"
+            document.getElementById('transcript').style.display = 'none'
             playAudio('static/audio/' + audio_b3[b3_index].file_name)
             document.getElementById('transcript_11labs').innerHTML =
-              audio_b3[b3_index].string
+              'AI: ' + audio_b3[b3_index].string
             b3_index += 1
-            console.log('b3_index', b3_index, 'audio_b3.length', audio_b3.length)
-          
+            console.log(
+              'b3_index',
+              b3_index,
+              'audio_b3.length',
+              audio_b3.length
+            )
           }
         }
       }
@@ -242,9 +263,7 @@ function playAudio (audioUrl) {
   const audio = new Audio(audioUrl)
   audio.play()
 
-  
   audio.addEventListener('ended', function () {
     startRec()
   })
-  
 }
