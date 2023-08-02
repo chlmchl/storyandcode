@@ -61,9 +61,9 @@ def index():
 @app.route('/participate', methods=['POST', 'GET'])
 def participate():
    
-    text_input = request.form['name']
-    global name
-    name = "Hello, " + text_input
+    # text_input = request.form['name']
+    # global name
+    # name = "Hello, " + text_input
 
     return render_template('participate.html')
 

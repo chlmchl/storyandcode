@@ -26,7 +26,7 @@ let b3_index = 0
 
 // Call the fetchAndPlayVideo function when the page loads
 document.addEventListener('DOMContentLoaded', () => {
-  sayMyName()
+  playIntro()
 })
 
 function sayMyName () {
