@@ -37,7 +37,7 @@ function sayMyName () {
   fetch('/generate', {
     method: 'POST'
   })
-    .then(response => response.json())
+    .then(response => response.text())
     .then(data => {
       response_text = data.response_text
       document.getElementById('transcript_11labs').innerHTML =
