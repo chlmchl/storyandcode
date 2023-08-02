@@ -70,10 +70,10 @@ def register():
 def intro():
     global string_index, b1, intro, csv_array, csv_array_audio, audioUrl
 
-    csv_file_path = directory + '/storyandcode/static/vids_lst.csv'
+    csv_file_path = directory + '/static/vids_lst.csv'
     csv_array = read_csv_to_array(csv_file_path, csv_array)
 
-    csv_file_path = directory + '/storyandcode/static/audio_lst.csv'
+    csv_file_path = directory + '/static/audio_lst.csv'
     csv_array_audio = read_csv_to_array(csv_file_path, csv_array_audio)
 
     print("CSV array with nested arrays:", csv_array_audio)

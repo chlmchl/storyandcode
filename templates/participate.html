@@ -40,10 +40,11 @@
   
     <div id="vid-container">
       <video id="video-player" muted="true" autoplay="true" playsinline="true" loop></video>
-      <video id="video-player2" muted="true" autoplay="true" playsinline="true" src="static/vids/batch_x/network_intro_dark_fast.mp4"></video>
+      <video id="video-player2" muted="true" autoplay="true" playsinline="true" loop src="static/vids/batch_x/network_intro_dark_fast.mp4"></video>
     </div>
   </section>
-  
+
+    <a href="{{ url_for('index') }}" style="display: none;" method="POST" id="cta-button" class="cta-button">Exit training</a>
     <!-- <button id="start_button" role="button" onClick="playIntro()">Enter</button> -->
 
 

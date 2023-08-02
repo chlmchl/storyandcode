@@ -34,10 +34,53 @@ function fetchAndPlayVideo () {
     pacing = 2000
     playVideo(filename, pacing, true)
   } else if (b3) {
+    if( document.getElementById('transcript_11labs').innerHTML === "End session") {
+      filename = 'static/vids/batch_x/bx_final_orb_1.mp4';
+      playVideo(filename, 4000, false)
+      setTimeout(() => document.getElementById('video-player2').style.display = 'block', 4000)
+      setTimeout(() => playAudio('static/audio/27_thankyou.mp3'), 4200)
+      setTimeout(() => document.getElementById('transcript_11labs').innerHTML =
+      "Thank you for your training today", 4500)
+      setTimeout(() => window.location.replace('/'), 8000) 
+    }else {
       checkForMatch(vids_b3)
-     filename = 'static/vids/batch_3/' + randomVideoUrl
-     pacing = 1500
-     playVideo(filename, pacing, true)
+      filename = 'static/vids/batch_3/' + randomVideoUrl
+      pacing = 1500
+
+  //     const popupContent = `<!DOCTYPE html>
+  //   <html>
+  
+  //   <head>
+  //     <link rel="stylesheet" type="text/css" href="../static/css/participate.css" />
+  //   </head>
+  //   <body>
+  //   <section class="container register">
+  //   <div class="transcripts">
+  //     <p id="transcript"></p>
+  //     <p id="transcript_11labs"></p>
+  //   </div>
+
+  //   <div id="webcam-container">
+  //     <video id="webcam-video" autoplay="true"></video>
+  //     <canvas id="canvas"></canvas>
+  //   </div>
+  
+  //   <div id="vid-container">
+  //     <video id="video-player" muted="true" autoplay="true" playsinline="true" src="${filename}" loop></video>
+  //   </div>
+  // </section>
+  // </body>`;
+  
+  //     // Open a new window with the popup content
+  //     const popupWindow = window.open("", filename, "width=600,height=400");
+  //     popupWindow.document.write(popupContent);
+  //     popupWindow.document.close();
+      
+  
+      playVideo(filename, pacing, true)
+
+
+    }
   }
 }
 

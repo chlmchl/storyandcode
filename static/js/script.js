@@ -2,7 +2,13 @@ let vids_b1 = []
 let vids_b2 = []
 let vids_b3 = []
 let vids_x = []
-let vids_montage = ['static/vids/batch_montage/Montage_1.mp4',' static/vids/batch_montage/Montage_2.mp4', 'static/vids/batch_montage/Montage_3.mp4', 'static/vids/batch_montage/Montage_4.mp4', 'static/vids/batch_montage/Montage_5.mp4']
+let vids_montage = [
+  'static/vids/batch_montage/Montage_1.mp4',
+  ' static/vids/batch_montage/Montage_2.mp4',
+  'static/vids/batch_montage/Montage_3.mp4',
+  'static/vids/batch_montage/Montage_4.mp4',
+  'static/vids/batch_montage/Montage_5.mp4'
+]
 
 let audio_b1 = []
 let audio_b2 = []
@@ -43,12 +49,27 @@ function playIntro () {
       //console.log(csv_array)
 
       playAudio('static/audio/' + audioUrl)
-      document.getElementById('transcript_11labs').innerHTML = 'Welcome to the Ayn-Tycho corporation baseline test for interplanetary missions.'
-      setTimeout(() => document.getElementById('transcript_11labs').innerHTML = "There are no wrong answers.", 4500)
-      setTimeout(() => document.getElementById('transcript_11labs').innerHTML = "Please respond naturally with simple word associations to what you hear and see to achieve your baseline.", 6500)
-      setTimeout(() => document.getElementById('transcript_11labs').innerHTML = 'To initiate say "start"', 12000)
+      document.getElementById('transcript_11labs').innerHTML =
+        'Welcome to the Ayn-Tycho corporation baseline test for interplanetary missions.'
+      setTimeout(
+        () =>
+          (document.getElementById('transcript_11labs').innerHTML =
+            'There are no wrong answers.'),
+        4500
+      )
+      setTimeout(
+        () =>
+          (document.getElementById('transcript_11labs').innerHTML =
+            'Please respond naturally with simple word associations to what you hear and see to achieve your baseline.'),
+        6500
+      )
+      setTimeout(
+        () =>
+          (document.getElementById('transcript_11labs').innerHTML =
+            'To initiate say "start"'),
+        12000
+      )
 
-    
       for (let i = 1; i < csv_array.length; i++) {
         const [file_name, batch, tags, note] = csv_array[i]
 
@@ -75,8 +96,6 @@ function playIntro () {
       }
 
       b1 = data.b1
-
-      
     })
     .catch(error => {
       console.error('Error playing intro:', error)
@@ -121,7 +140,6 @@ function startRec () {
       // Check for silence or pauses in speech
       const lastResult = event.results[event.results.length - 1]
       if (lastResult.isFinal) {
-        isSpeaking = false
         if (!started) {
           if (
             inputField.value.trim() === 'start' ||
@@ -136,57 +154,73 @@ function startRec () {
             recognition.stop()
             filename = vids_montage[0]
             playVideo(filename, 1000, false)
-            
+
             setTimeout(() => playAudio('static/audio/00_stream.mp3'), 1500)
 
-            setTimeout(() => document.getElementById('transcript_11labs').innerHTML =
-              'You see a stream', 1500)
-            
+            setTimeout(
+              () =>
+                (document.getElementById('transcript_11labs').innerHTML =
+                  'You see a stream'),
+              1500
+            )
+
             setTimeout(() => fetchAndPlayVideo(), 2000)
 
-            setTimeout(() => document.getElementById('transcript_11labs').innerHTML =
-              'Is the stream warm or cold?', 2500)
+            setTimeout(
+              () =>
+                (document.getElementById('transcript_11labs').innerHTML =
+                  'Is the stream warm or cold?'),
+              2500
+            )
             //fetchAndPlayVideo()
           }
         } else {
-          if (inputField.value.trim() !== '') {
-            recognition.stop()
-            if (b1) {
+          if (b1) {
+            if (inputField.value.trim() !== '') {
+              recognition.stop()
               b1_index += 1
               playVideo(vids_montage[b1_index + 1], 1000, false)
-              setTimeout(() => playAudio('static/audio/' + audio_b1[b1_index].file_name), 1500)
-              setTimeout(() => document.getElementById('transcript_11labs').innerHTML = audio_b1[b1_index].string, 1500)
+              setTimeout(
+                () => playAudio('static/audio/' + audio_b1[b1_index].file_name),
+                1500
+              )
+              setTimeout(
+                () =>
+                  (document.getElementById('transcript_11labs').innerHTML =
+                    audio_b1[b1_index].string),
+                1500
+              )
               setTimeout(() => fetchAndPlayVideo(), 2000)
               // console.log(b1)
               // console.log(b2)
-              
+
               if (b1_index >= audio_b1.length - 1) {
                 b1 = false
                 b2 = true
               }
-            } else if (b2) {
+            }
+          } else if (b2) {
+            if (inputField.value.trim() !== '') {
+              recognition.stop()
               //console.log('starting b2')
               playAudio('static/audio/' + audio_b2[b2_index].file_name)
-              document.getElementById('transcript_11labs').innerHTML =
-                audio_b2[b2_index].string
+              document.getElementById('transcript_11labs').innerHTML = audio_b2[b2_index].string
               b2_index += 1
               if (b2_index >= audio_b2.length) {
                 b2 = false
                 b3 = true
               }
-            } else if (b3) {
-              playAudio('static/audio/' + audio_b3[b3_index].file_name)
-              document.getElementById('transcript_11labs').innerHTML =
-                audio_b3[b3_index].string
-              b3_index += 1
-              if (b3_index >= audio_b3.length) {
-                b3 = false
-              }
             }
+          } else if (b3) {
+            document.getElementById('transcript').style.display = "none"
+            playAudio('static/audio/' + audio_b3[b3_index].file_name)
+            document.getElementById('transcript_11labs').innerHTML =
+              audio_b3[b3_index].string
+            b3_index += 1
+            console.log('b3_index', b3_index, 'audio_b3.length', audio_b3.length)
+          
           }
         }
-      } else {
-        isSpeaking = true
       }
     }
 
@@ -208,7 +242,9 @@ function playAudio (audioUrl) {
   const audio = new Audio(audioUrl)
   audio.play()
 
+  
   audio.addEventListener('ended', function () {
     startRec()
   })
+  
 }
