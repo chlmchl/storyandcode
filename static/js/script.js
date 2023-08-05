@@ -79,13 +79,20 @@ function playIntro () {
           (document.getElementById('transcript_11labs').innerHTML =
             'AI: ' +
             'Please respond naturally with simple word associations to what you hear and see to achieve your baseline.'),
-        6500
+        6000
       )
       setTimeout(
         () =>
           (document.getElementById('transcript_11labs').innerHTML =
+            'AI: ' + 'You must speak clear and loud.'),
+        10800
+      ) 
+
+      setTimeout(
+        () =>
+          (document.getElementById('transcript_11labs').innerHTML =
             'AI: ' + 'To initiate say "start"'),
-        12000
+        13400
       )
 
       for (let i = 1; i < csv_array.length; i++) {

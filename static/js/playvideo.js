@@ -34,15 +34,21 @@ function fetchAndPlayVideo () {
     pacing = 2000
     playVideo(filename, pacing, true)
   } else if (b3) {
-    if( document.getElementById('transcript_11labs').innerHTML === "End session") {
-      filename = 'static/vids/batch_x/bx_final_orb_1.mp4';
+    if(document.getElementById('transcript_11labs').innerHTML === "AI: And what brings you in today?") {
+      filename = 'static/vids/batch_x/network_intro_dark_fast.mp4';
+      playVideo(filename, 4000, true)
+    }else if (document.getElementById('transcript_11labs').innerHTML === "AI: If I show you this... how does that make you feel?"){
+      filename = 'static/vids/batch_3/b3_v1_faceless_1.mp4';
+      playVideo(filename, 4000, true)
+    } else if(document.getElementById('transcript_11labs').innerHTML === "AI: Assess. Reject.") {
+      filename = 'static/vids/batch_x/bx_final_orb_2.mp4';
       playVideo(filename, 4000, false)
       setTimeout(() => document.getElementById('video-player2').style.display = 'block', 4000)
       setTimeout(() => playAudio('static/audio/27_thankyou.mp3'), 4200)
       setTimeout(() => document.getElementById('transcript_11labs').innerHTML =
       "Thank you for your training today", 4500)
       setTimeout(() => window.location.replace('/'), 8000) 
-    }else {
+    } else {
       checkForMatch(vids_b3)
       filename = 'static/vids/batch_3/' + randomVideoUrl
       pacing = 1500
