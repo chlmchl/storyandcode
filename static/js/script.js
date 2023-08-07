@@ -100,7 +100,7 @@ function playIntro () {
 
         if (batch === 'b1') {
           vids_b1.push({ file_name, tags })
-          console.log(vids_b1)
+          //console.log(vids_b1)
         } else if (batch === 'b2') {
           vids_b2.push({ file_name, tags })
         } else if (batch === 'b3') {
@@ -113,6 +113,7 @@ function playIntro () {
 
         if (batch === 'b1') {
           audio_b1.push({ file_name, string })
+          console.log(audio_b1)
         } else if (batch === 'b2') {
           audio_b2.push({ file_name, string })
         } else if (batch === 'b3') {
@@ -216,10 +217,11 @@ function startRec () {
                 1500
               )
               setTimeout(() => fetchAndPlayVideo(), 2000)
-              // console.log(b1)
+              console.log(b1_index)
+              console.log(audio_b1.length)
               // console.log(b2)
 
-              if (b1_index >= audio_b1.length - 1) {
+              if (b1_index >= 3) {
                 b1 = false
                 b2 = true
               }
@@ -232,7 +234,7 @@ function startRec () {
               document.getElementById('transcript_11labs').innerHTML =
                 'AI: ' + audio_b2[b2_index].string
               b2_index += 1
-              if (b2_index >= audio_b2.length) {
+              if (b2_index >= 9) {
                 b2 = false
                 b3 = true
               }

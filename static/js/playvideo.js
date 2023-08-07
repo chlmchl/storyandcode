@@ -36,10 +36,10 @@ function fetchAndPlayVideo () {
   } else if (b3) {
     if(document.getElementById('transcript_11labs').innerHTML === "AI: And what brings you in today?") {
       filename = 'static/vids/batch_x/network_intro_dark_fast.mp4';
-      playVideo(filename, 4000, true)
+      playVideo(filename, 3000, true)
     }else if (document.getElementById('transcript_11labs').innerHTML === "AI: If I show you this... how does that make you feel?"){
       filename = 'static/vids/batch_3/b3_v1_faceless_1.mp4';
-      playVideo(filename, 4000, true)
+      playVideo(filename, 3000, true)
     } else if(document.getElementById('transcript_11labs').innerHTML === "AI: Assess... Accept.") {
       filename = 'static/vids/batch_x/bx_final_orb_2.mp4';
       playVideo(filename, 4000, false)
@@ -50,7 +50,7 @@ function fetchAndPlayVideo () {
       setTimeout(() => playAudio('static/audio/27_thankyou.mp3'), 7500)
       setTimeout(() => document.getElementById('transcript_11labs').innerHTML =
       "Congratulations! Based on your performance, you are eligible for the House of Saturn elite training program. However, only a select few will be chosen for the premier mission to explore signs of life on the surface of Titan.", 7500)
-      setTimeout(() => window.location.replace('/'), 12000) 
+      setTimeout(() => window.location.replace('/'), 18000) 
     } else {
       checkForMatch(vids_b3)
       filename = 'static/vids/batch_3/' + randomVideoUrl
