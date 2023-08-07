@@ -50,7 +50,7 @@ function fetchAndPlayVideo () {
       setTimeout(() => playAudio('static/audio/27_thankyou.mp3'), 7500)
       setTimeout(() => document.getElementById('transcript_11labs').innerHTML =
       "Congratulations! Based on your performance, you are eligible for the House of Saturn elite training program. However, only a select few will be chosen for the premier mission to explore signs of life on the surface of Titan.", 7500)
-      setTimeout(() => window.location.replace('/'), 18000) 
+      setTimeout(() => window.location.replace('/'), 22000) 
     } else {
       checkForMatch(vids_b3)
       filename = 'static/vids/batch_3/' + randomVideoUrl
