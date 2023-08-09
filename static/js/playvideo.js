@@ -47,9 +47,9 @@ function fetchAndPlayVideo () {
       setTimeout(() => playAudio('static/audio/26_end.mp3'), 4200)
       setTimeout(() => document.getElementById('transcript_11labs').innerHTML =
       "End session.", 4500)
-      setTimeout(() => playAudio('static/audio/27_thankyou.mp3'), 7500)
+      setTimeout(() => playAudio('static/audio/name.mp3'), 7500)
       setTimeout(() => document.getElementById('transcript_11labs').innerHTML =
-      "Congratulations! Based on your performance, you are eligible for the House of Saturn elite training program. However, only a select few will be chosen for the premier mission to explore signs of life on the surface of Titan.", 7500)
+      `Congratulations, ${userName}. You have been accepted into the House of Saturn elite training program.`, 7500)
       setTimeout(() => window.location.replace('/'), 22000) 
     } else {
       checkForMatch(vids_b3)

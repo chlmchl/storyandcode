@@ -24,6 +24,8 @@ let b1_index = -1
 let b2_index = 0
 let b3_index = 0
 
+let userName = ''
+
 // Call the fetchAndPlayVideo function when the page loads
 document.addEventListener('DOMContentLoaded', () => {
   playIntro()
@@ -61,7 +63,8 @@ function playIntro () {
       audioUrl = data.audioUrl
       csv_array = data.csv_array
       csv_array_audio = data.csv_array_audio
-
+      userName = data.name
+      console.log(userName)
       //console.log(csv_array)
 
       playAudio('static/audio/' + audioUrl)
@@ -240,23 +243,77 @@ function startRec () {
               }
             }
           } else if (b3) {
-            //document.getElementById('transcript').style.display = 'none'
-            if(document.getElementById('transcript').innerHTML.indexOf("sad") != -1) {
-              playAudio('static/audio/sad.mp3')
-              document.getElementById('transcript_11labs').innerHTML =
-                'AI: sad, really?'
-            } else {
-              playAudio('static/audio/' + audio_b3[b3_index].file_name)
-              document.getElementById('transcript_11labs').innerHTML =
-                'AI: ' + audio_b3[b3_index].string
-              b3_index += 1
-              console.log(
-                'b3_index',
-                b3_index,
-                'audio_b3.length',
-                audio_b3.length
-              )
-            }
+            //if (inputField.value.trim() !== '') {
+              recognition.stop()
+              //document.getElementById('transcript').style.display = 'none'
+              if(document.getElementById('transcript_11labs').innerHTML.indexOf("feel") != -1 && document.getElementById('transcript').innerHTML.indexOf("sad") != -1) {
+                playAudio('static/audio/sad.mp3')
+                document.getElementById('transcript_11labs').innerHTML =
+                  'AI: It\'s making you feel... sad?'
+                  setTimeout(() => playAudio('static/audio/' + audio_b3[b3_index].file_name),3000)
+                setTimeout(() => document.getElementById('transcript_11labs').innerHTML = 'AI: ' + audio_b3[b3_index].string, 3000)
+                setTimeout(() => b3_index += 1, 3000)
+              } else if(document.getElementById('transcript_11labs').innerHTML.indexOf("feel") != -1 && document.getElementById('transcript').innerHTML.indexOf("angry") != -1) {
+                playAudio('static/audio/angry.mp3')
+                document.getElementById('transcript_11labs').innerHTML =
+                  'AI: Angry? Interesting...'
+                setTimeout(() => recognition.stop(), 3000)
+                setTimeout(() => playAudio('static/audio/' + audio_b3[b3_index].file_name),3000)
+                setTimeout(() => document.getElementById('transcript_11labs').innerHTML = 'AI: ' + audio_b3[b3_index].string, 3000)
+                setTimeout(() => b3_index += 1, 3000)
+              } else if(document.getElementById('transcript_11labs').innerHTML.indexOf("feel") != -1 && document.getElementById('transcript').innerHTML.indexOf("happy") != -1) {
+                playAudio('static/audio/happy.mp3')
+                document.getElementById('transcript_11labs').innerHTML =
+                  'AI: oh... happy?'
+                  setTimeout(() => recognition.stop(), 3000)
+                  setTimeout(() => playAudio('static/audio/' + audio_b3[b3_index].file_name),3000)
+                setTimeout(() => document.getElementById('transcript_11labs').innerHTML = 'AI: ' + audio_b3[b3_index].string, 3000)
+                setTimeout(() => b3_index += 1, 3000)
+              } else if(document.getElementById('transcript_11labs').innerHTML.indexOf("feel") != -1 && document.getElementById('transcript').innerHTML.indexOf("don't know") != -1) {
+                playAudio('static/audio/know.mp3')
+                document.getElementById('transcript_11labs').innerHTML =
+                  'AI: you don\'t know?'
+                  setTimeout(() => recognition.stop(), 3000)
+                setTimeout(() => playAudio('static/audio/' + audio_b3[b3_index].file_name),3000)
+                setTimeout(() => document.getElementById('transcript_11labs').innerHTML = 'AI: ' + audio_b3[b3_index].string, 3000)
+                setTimeout(() => b3_index += 1, 3000)
+              } else if(document.getElementById('transcript_11labs').innerHTML.indexOf("feel") != -1 && document.getElementById('transcript').innerHTML.indexOf("scared") != -1) {
+                playAudio('static/audio/scared_Really.mp3')
+                document.getElementById('transcript_11labs').innerHTML =
+                  'AI: Scared... really?'
+                  setTimeout(() => recognition.stop(), 3000)
+                  setTimeout(() => playAudio('static/audio/' + audio_b3[b3_index].file_name),3000)
+                setTimeout(() => document.getElementById('transcript_11labs').innerHTML = 'AI: ' + audio_b3[b3_index].string, 3000)
+                setTimeout(() => b3_index += 1, 3000)
+              } else if(document.getElementById('transcript_11labs').innerHTML.indexOf("feel") != -1 && document.getElementById('transcript').innerHTML.indexOf("bored") != -1) {
+                playAudio('static/audio/really1.mp3')
+                document.getElementById('transcript_11labs').innerHTML =
+                  'AI: mmmh... really?'
+                  setTimeout(() => recognition.stop(), 3000)
+                  setTimeout(() => playAudio('static/audio/' + audio_b3[b3_index].file_name),3000)
+                  setTimeout(() => document.getElementById('transcript_11labs').innerHTML = 'AI: ' + audio_b3[b3_index].string, 3000)
+                  setTimeout(() => b3_index += 1, 3000)
+              } else if(document.getElementById('transcript_11labs').innerHTML.indexOf("feel") != -1 && inputField.value.trim() !== '') {
+                playAudio('static/audio/mmh.mp3')
+                document.getElementById('transcript_11labs').innerHTML =
+                  'AI: mmmh...'
+                setTimeout(() => recognition.stop(), 2000)
+                setTimeout(() => playAudio('static/audio/' + audio_b3[b3_index].file_name),2000)
+                setTimeout(() => document.getElementById('transcript_11labs').innerHTML = 'AI: ' + audio_b3[b3_index].string, 2000)
+                setTimeout(() => b3_index += 1, 2000)
+              } else {
+                playAudio('static/audio/' + audio_b3[b3_index].file_name)
+                document.getElementById('transcript_11labs').innerHTML =
+                  'AI: ' + audio_b3[b3_index].string
+                b3_index += 1
+                console.log(
+                  'b3_index',
+                  b3_index,
+                  'audio_b3.length',
+                  audio_b3.length
+                )
+              }
+            //}
           }
         }
       }

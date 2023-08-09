@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify, session, send_file
 # from flask_cors import CORS
-from elevenlabs import voices, generate, stream, set_api_key
+from pydub import AudioSegment
+from elevenlabs import voices, generate, stream, set_api_key, save
 import openai
 import os
 import random
@@ -61,9 +62,20 @@ def index():
 @app.route('/participate', methods=['POST', 'GET'])
 def participate():
    
-    # text_input = request.form['name']
-    # global name
-    # name = "Hello, " + text_input
+    text_input = request.form['name']
+    global name
+    name = "Congratulations, " + text_input + ". You have been accepted into the House of Saturn elite training program."
+    
+    audio_stream = generate(
+        text=name,
+        voice="yoZ06aMxZJJ28mfd3POQ",
+        #stream=True
+    )
+    save(audio_stream, 'static/audio/name.mp3')
+    #stream(audio_stream)
+    # audio_segment = AudioSegment.from_file(audio_stream)
+    # voice_dir = "/static/" 
+    # audio_segment.export(voice_dir, format="mp3")
 
     return render_template('participate.html')
 
@@ -75,7 +87,7 @@ def register():
 
 @app.route ('/intro', methods=['POST', 'GET'])
 def intro():
-    global string_index, b1, intro, csv_array, csv_array_audio, audioUrl
+    global string_index, b1, intro, csv_array, csv_array_audio, audioUrl, name
 
     csv_file_path = directory + '/storyandcode/static/vids_lst.csv'
     csv_array = read_csv_to_array(csv_file_path, csv_array)
@@ -97,7 +109,7 @@ def intro():
 
         intro = False
 
-    return jsonify({'response_text': response_text,'audioUrl': audioUrl, 'intro': intro, 'b1': b1, 'csv_array': csv_array, 'csv_array_audio' :csv_array_audio, 'is_final': False})
+    return jsonify({'name': name, 'response_text': response_text,'audioUrl': audioUrl, 'intro': intro, 'b1': b1, 'csv_array': csv_array, 'csv_array_audio' :csv_array_audio, 'is_final': False})
 
 
 @app.route('/generate', methods=['POST', 'GET'])
