@@ -63,7 +63,7 @@ function playIntro () {
       audioUrl = data.audioUrl
       csv_array = data.csv_array
       csv_array_audio = data.csv_array_audio
-      userName = data.name
+      userName = data.userName
       console.log(userName)
       //console.log(csv_array)
 

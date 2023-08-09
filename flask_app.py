@@ -33,6 +33,7 @@ csv_array = []
 csv_array_audio = []
 audioUrl = ''
 name = ''
+userName = ''
 
 directory = os.getcwd()
 
@@ -63,7 +64,8 @@ def index():
 def participate():
    
     text_input = request.form['name']
-    global name
+    global name, userName
+    userName = text_input
     name = "Congratulations, " + text_input + ". You have been accepted into the House of Saturn elite training program."
     
     audio_stream = generate(
@@ -71,8 +73,8 @@ def participate():
         voice="yoZ06aMxZJJ28mfd3POQ",
         #stream=True
     )
-    save(audio_stream, 'static/audio/name.mp3')
-    #stream(audio_stream)
+    save(audio_stream, directory + '/storyandcode/static/audio/name.mp3')
+    # stream(audio_stream)
     # audio_segment = AudioSegment.from_file(audio_stream)
     # voice_dir = "/static/" 
     # audio_segment.export(voice_dir, format="mp3")
@@ -87,7 +89,7 @@ def register():
 
 @app.route ('/intro', methods=['POST', 'GET'])
 def intro():
-    global string_index, b1, intro, csv_array, csv_array_audio, audioUrl, name
+    global string_index, b1, intro, csv_array, csv_array_audio, audioUrl, userName
 
     csv_file_path = directory + '/storyandcode/static/vids_lst.csv'
     csv_array = read_csv_to_array(csv_file_path, csv_array)
@@ -109,7 +111,7 @@ def intro():
 
         intro = False
 
-    return jsonify({'name': name, 'response_text': response_text,'audioUrl': audioUrl, 'intro': intro, 'b1': b1, 'csv_array': csv_array, 'csv_array_audio' :csv_array_audio, 'is_final': False})
+    return jsonify({'userName': userName, 'response_text': response_text,'audioUrl': audioUrl, 'intro': intro, 'b1': b1, 'csv_array': csv_array, 'csv_array_audio' :csv_array_audio, 'is_final': False})
 
 
 @app.route('/generate', methods=['POST', 'GET'])
