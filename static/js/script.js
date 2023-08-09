@@ -240,17 +240,23 @@ function startRec () {
               }
             }
           } else if (b3) {
-            document.getElementById('transcript').style.display = 'none'
-            playAudio('static/audio/' + audio_b3[b3_index].file_name)
-            document.getElementById('transcript_11labs').innerHTML =
-              'AI: ' + audio_b3[b3_index].string
-            b3_index += 1
-            console.log(
-              'b3_index',
-              b3_index,
-              'audio_b3.length',
-              audio_b3.length
-            )
+            //document.getElementById('transcript').style.display = 'none'
+            if(document.getElementById('transcript').innerHTML.indexOf("sad") != -1) {
+              playAudio('static/audio/sad.mp3')
+              document.getElementById('transcript_11labs').innerHTML =
+                'AI: sad, really?'
+            } else {
+              playAudio('static/audio/' + audio_b3[b3_index].file_name)
+              document.getElementById('transcript_11labs').innerHTML =
+                'AI: ' + audio_b3[b3_index].string
+              b3_index += 1
+              console.log(
+                'b3_index',
+                b3_index,
+                'audio_b3.length',
+                audio_b3.length
+              )
+            }
           }
         }
       }
