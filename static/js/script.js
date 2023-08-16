@@ -11,13 +11,14 @@ let vids_montage = [
 ]
 
 let vids_montage_b3 = [
-  'static/vids/batch_3/emotion_montage_joy.mp4',
-  'static/vids/batch_3/emotion_montage_desire.mp4',
-  'static/vids/batch_3/emotion_montage_anger.mp4',
-  'static/vids/batch_3/emotion_montage_depression.mp4',
-  'static/vids/batch_3/emotion_montage_disaster_1.mp4',
-  'static/vids/batch_3/emotion_montage_disgust.mp4',
-  'static/vids/batch_3/emotion_montage_freakish_1.mp4'
+  'emotion_montage_joy.mp4',
+  'emotion_montage_anger.mp4',
+  'emotion_montage_desire.mp4',
+  'emotion_montage_depression.mp4',
+  'emotion_montage_disgust.mp4',
+  'emotion_montage_disaster_1.mp4',
+  'emotion_montage_disgust.mp4',
+  'emotion_montage_freakish_1.mp4'
 ]
 
 let audio_b1 = []
@@ -33,7 +34,7 @@ let started = false
 let b1_index = -1
 let b2_index = 0
 let b3_index = 0
-b3_montage_index = 0
+let b3_montage_index = 0
 
 let userName = ''
 
@@ -315,8 +316,8 @@ function startRec () {
                 setTimeout(() => b3_index += 1, 2000)
               } else {
                 if(audio_b3[b3_index].note != "" && audio_b3[b3_index].note != "nothing") {
-                  console.log(audio_b3[b3_index].note)
-                  playVideo('static/vids/batch_3/' + audio_b3[b3_index].note, 5000, false)
+                  playVideo('static/vids/batch_3/' + vids_montage_b3[b3_montage_index], 5000, false)
+                  b3_montage_index += 1
                 } else {
                   fetchAndPlayVideo()
                 }
