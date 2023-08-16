@@ -4,10 +4,20 @@ let vids_b3 = []
 let vids_x = []
 let vids_montage = [
   'static/vids/batch_montage/Montage_1.mp4',
-  ' static/vids/batch_montage/Montage_2.mp4',
+  'static/vids/batch_montage/Montage_2.mp4',
   'static/vids/batch_montage/Montage_3.mp4',
   'static/vids/batch_montage/Montage_4.mp4',
   'static/vids/batch_montage/Montage_5.mp4'
+]
+
+let vids_montage_b3 = [
+  'static/vids/batch_3/emotion_montage_joy.mp4',
+  'static/vids/batch_3/emotion_montage_desire.mp4',
+  'static/vids/batch_3/emotion_montage_anger.mp4',
+  'static/vids/batch_3/emotion_montage_depression.mp4',
+  'static/vids/batch_3/emotion_montage_disaster_1.mp4',
+  'static/vids/batch_3/emotion_montage_disgust.mp4',
+  'static/vids/batch_3/emotion_montage_freakish_1.mp4'
 ]
 
 let audio_b1 = []
@@ -23,6 +33,7 @@ let started = false
 let b1_index = -1
 let b2_index = 0
 let b3_index = 0
+b3_montage_index = 0
 
 let userName = ''
 
@@ -65,6 +76,7 @@ function playIntro () {
       csv_array_audio = data.csv_array_audio
       userName = data.userName
       console.log(userName)
+      console.log(typeof userName)
       //console.log(csv_array)
 
       playAudio('static/audio/' + audioUrl)
@@ -120,7 +132,7 @@ function playIntro () {
         } else if (batch === 'b2') {
           audio_b2.push({ file_name, string })
         } else if (batch === 'b3') {
-          audio_b3.push({ file_name, string })
+          audio_b3.push({ file_name, string, note })
         }
       }
 
@@ -224,7 +236,7 @@ function startRec () {
               console.log(audio_b1.length)
               // console.log(b2)
 
-              if (b1_index >= 3) {
+              if (b1_index >= 2) {
                 b1 = false
                 b2 = true
               }
@@ -270,7 +282,7 @@ function startRec () {
                 setTimeout(() => document.getElementById('transcript_11labs').innerHTML = 'AI: ' + audio_b3[b3_index].string, 3000)
                 setTimeout(() => b3_index += 1, 3000)
               } else if(document.getElementById('transcript_11labs').innerHTML.indexOf("feel") != -1 && document.getElementById('transcript').innerHTML.indexOf("don't know") != -1) {
-                playAudio('static/audio/know.mp3')
+                playAudio('static/audio/dontknow.mp3')
                 document.getElementById('transcript_11labs').innerHTML =
                   'AI: you don\'t know?'
                   setTimeout(() => recognition.stop(), 3000)
@@ -302,6 +314,12 @@ function startRec () {
                 setTimeout(() => document.getElementById('transcript_11labs').innerHTML = 'AI: ' + audio_b3[b3_index].string, 2000)
                 setTimeout(() => b3_index += 1, 2000)
               } else {
+                if(audio_b3[b3_index].note != "" && audio_b3[b3_index].note != "nothing") {
+                  console.log(audio_b3[b3_index].note)
+                  playVideo('static/vids/batch_3/' + audio_b3[b3_index].note, 5000, true)
+                } else {
+                  fetchAndPlayVideo()
+                }
                 playAudio('static/audio/' + audio_b3[b3_index].file_name)
                 document.getElementById('transcript_11labs').innerHTML =
                   'AI: ' + audio_b3[b3_index].string

@@ -66,14 +66,32 @@ def participate():
     text_input = request.form['name']
     global name, userName
     userName = text_input
-    name = "Congratulations, " + text_input + ". You have been accepted into the House of Saturn elite training program."
+    congrats = "Congratulations, " + text_input + ". You have been accepted into the House of Saturn elite training program."
     
     audio_stream = generate(
-        text=name,
+        text=congrats,
         voice="yoZ06aMxZJJ28mfd3POQ",
         #stream=True
     )
-    save(audio_stream, directory + '/storyandcode/static/audio/name.mp3')
+    save(audio_stream, directory + '/storyandcode/static/audio/congrats.mp3')
+
+    verygood = "Very good, " + text_input 
+    
+    audio_stream = generate(
+        text=verygood,
+        voice="yoZ06aMxZJJ28mfd3POQ",
+        #stream=True
+    )
+    save(audio_stream, directory + '/storyandcode/static/audio/verygood.mp3')
+
+    show = "If I show you this... How does that make you feel," + text_input + "?"
+    
+    audio_stream = generate(
+        text=show,
+        voice="yoZ06aMxZJJ28mfd3POQ",
+        #stream=True
+    )
+    save(audio_stream, directory + '/storyandcode/static/audio/17_show.mp3')
     # stream(audio_stream)
     # audio_segment = AudioSegment.from_file(audio_stream)
     # voice_dir = "/static/" 

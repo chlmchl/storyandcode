@@ -23,12 +23,16 @@ function playVideo (filename, pacing, loop) {
 
 // Function to fetch the video URL and start playing
 function fetchAndPlayVideo () {
+  console.log(userName)
   if (b1) {
     checkForMatch(vids_b1)
     filename = 'static/vids/batch_1/' + randomVideoUrl
     pacing = 3000
     playVideo(filename, pacing, false)
   } else if (b2) {
+    if(document.getElementById('transcript_11labs').innerHTML === "AI: Very good!") { 
+      document.getElementById('transcript_11labs').innerHTML === `AI: Very good, ${userName}`
+    }
     checkForMatch(vids_b2)
     filename = 'static/vids/batch_2/' + randomVideoUrl
     pacing = 2000
@@ -36,10 +40,11 @@ function fetchAndPlayVideo () {
   } else if (b3) {
     if(document.getElementById('transcript_11labs').innerHTML === "AI: And what brings you in today?") {
       filename = 'static/vids/batch_x/network_intro_dark_fast.mp4';
-      playVideo(filename, 3000, true)
-    }else if (document.getElementById('transcript_11labs').innerHTML === "AI: If I show you this... how does that make you feel?"){
-      filename = 'static/vids/batch_3/b3_v1_faceless_1.mp4';
-      playVideo(filename, 3000, true)
+      playVideo(filename, 3000, false)
+    } else if (document.getElementById('transcript_11labs').innerHTML === "If I show you this... how does that make you feel?") {
+      document.getElementById('transcript_11labs').innerHTML === `If I show you this... how does that make you feel, ${userName}?`
+    } else if(document.getElementById('transcript_11labs').innerHTML === "AI: Assess...") {
+      setTimeout(() => playAudio('static/audio/25_assess.mp3'), 2000)
     } else if(document.getElementById('transcript_11labs').innerHTML === "AI: Assess... Accept.") {
       filename = 'static/vids/batch_x/bx_final_orb_2.mp4';
       playVideo(filename, 4000, false)
@@ -47,7 +52,7 @@ function fetchAndPlayVideo () {
       setTimeout(() => playAudio('static/audio/26_end.mp3'), 4200)
       setTimeout(() => document.getElementById('transcript_11labs').innerHTML =
       "End session.", 4500)
-      setTimeout(() => playAudio('static/audio/name.mp3'), 7500)
+      setTimeout(() => playAudio('static/audio/congrats.mp3'), 7500)
       setTimeout(() => document.getElementById('transcript_11labs').innerHTML =
       `Congratulations, ${userName}. You have been accepted into the House of Saturn elite training program.`, 7500)
       setTimeout(() => window.location.replace('/'), 22000) 
@@ -56,35 +61,6 @@ function fetchAndPlayVideo () {
       filename = 'static/vids/batch_3/' + randomVideoUrl
       pacing = 1500
 
-  //     const popupContent = `<!DOCTYPE html>
-  //   <html>
-  
-  //   <head>
-  //     <link rel="stylesheet" type="text/css" href="../static/css/participate.css" />
-  //   </head>
-  //   <body>
-  //   <section class="container register">
-  //   <div class="transcripts">
-  //     <p id="transcript"></p>
-  //     <p id="transcript_11labs"></p>
-  //   </div>
-
-  //   <div id="webcam-container">
-  //     <video id="webcam-video" autoplay="true"></video>
-  //     <canvas id="canvas"></canvas>
-  //   </div>
-  
-  //   <div id="vid-container">
-  //     <video id="video-player" muted="true" autoplay="true" playsinline="true" src="${filename}" loop></video>
-  //   </div>
-  // </section>
-  // </body>`;
-  
-  //     // Open a new window with the popup content
-  //     const popupWindow = window.open("", filename, "width=600,height=400");
-  //     popupWindow.document.write(popupContent);
-  //     popupWindow.document.close();
-      
   
       playVideo(filename, pacing, true)
 
