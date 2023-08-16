@@ -82,32 +82,32 @@ function playIntro () {
       playAudio('static/audio/' + audioUrl)
       document.getElementById('transcript_11labs').innerHTML =
         'AI: ' +
-        'Welcome to the Ayn-Tycho corporation baseline test for interplanetary missions.'
+        'Welcome to the Ayn-Tycho corporation mental fitness assessment for interplanetary missions.'
       setTimeout(
         () =>
           (document.getElementById('transcript_11labs').innerHTML =
             'AI: ' + 'There are no wrong answers.'),
-        4500
+        5000
       )
       setTimeout(
         () =>
           (document.getElementById('transcript_11labs').innerHTML =
             'AI: ' +
-            'Please respond naturally with simple word associations to what you hear and see to achieve your baseline.'),
-        6000
+            'Please respond naturally with simple word associations to what you hear and see to achieve your benchmark.'),
+        6500
       )
       setTimeout(
         () =>
           (document.getElementById('transcript_11labs').innerHTML =
             'AI: ' + 'You must speak clear and loud.'),
-        10800
+        12000
       ) 
 
       setTimeout(
         () =>
           (document.getElementById('transcript_11labs').innerHTML =
             'AI: ' + 'To initiate say "start"'),
-        13400
+        14400
       )
 
       for (let i = 1; i < csv_array.length; i++) {
