@@ -66,36 +66,6 @@ def participate():
     text_input = request.form['name']
     global name, userName
     userName = text_input
-    congrats = "Congratulations, " + text_input + ". You have been accepted into the House of Saturn elite training program."
-    
-    audio_stream = generate(
-        text=congrats,
-        voice="yoZ06aMxZJJ28mfd3POQ",
-        #stream=True
-    )
-    save(audio_stream, directory + '/storyandcode/static/audio/congrats.mp3')
-
-    verygood = "Very good, " + text_input 
-    
-    audio_stream = generate(
-        text=verygood,
-        voice="yoZ06aMxZJJ28mfd3POQ",
-        #stream=True
-    )
-    save(audio_stream, directory + '/storyandcode/static/audio/show.mp3')
-
-    show = "If I show you this... How does that make you feel," + text_input +"?"
-    
-    audio_stream = generate(
-        text=show,
-        voice="yoZ06aMxZJJ28mfd3POQ",
-        #stream=True
-    )
-    save(audio_stream, directory + '/storyandcode/static/audio/show.mp3')
-    # stream(audio_stream)
-    # audio_segment = AudioSegment.from_file(audio_stream)
-    # voice_dir = "/static/" 
-    # audio_segment.export(voice_dir, format="mp3")
 
     return render_template('participate.html')
 
@@ -128,22 +98,43 @@ def intro():
         # stream(audio_stream)
 
         intro = False
+    # stream(audio_stream)
+    # audio_segment = AudioSegment.from_file(audio_stream)
+    # voice_dir = "/storyandcode/static/" 
+    # audio_segment.export(voice_dir, format="mp3")
 
     return jsonify({'userName': userName, 'response_text': response_text,'audioUrl': audioUrl, 'intro': intro, 'b1': b1, 'csv_array': csv_array, 'csv_array_audio' :csv_array_audio, 'is_final': False})
 
 
 @app.route('/generate', methods=['POST', 'GET'])
 def generate_audio():
-    global name
-    response_text = name
+    congrats = "Congratulations, " + userName + ". You have been accepted into the House of Saturn elite training program."
+    
     audio_stream = generate(
-        text=response_text,
+        text=congrats,
         voice="yoZ06aMxZJJ28mfd3POQ",
-        stream=True
+        #stream=True
     )
-    stream(audio_stream)
+    save(audio_stream, directory + '/storyandcode/static/audio/congrats.mp3')
 
-    return jsonify({'response_text': response_text, 'is_final': True})
+    verygood = "Very good, " + userName 
+    
+    audio_stream = generate(
+        text=verygood,
+        voice="yoZ06aMxZJJ28mfd3POQ",
+        #stream=True
+    )
+    save(audio_stream, directory + '/storyandcode/static/audio/show.mp3')
+
+    show = "If I show you this... How does that make you feel," + userName +"?"
+    
+    audio_stream = generate(
+        text=show,
+        voice="yoZ06aMxZJJ28mfd3POQ",
+        #stream=True
+    )
+    save(audio_stream, directory + '/storyandcode/static/audio/show.mp3')
+    return jsonify({'show': show, 'is_final': True})
 
 if __name__ == '__main__':
     app.run()

@@ -41,24 +41,20 @@ let userName = ''
 // Call the fetchAndPlayVideo function when the page loads
 document.addEventListener('DOMContentLoaded', () => {
   playIntro()
+  fetch('/generate', {
+    method: 'POST'
+  })
+    .then(response => response.text())
+    .then(data => {
+      show = data.shows
+      console.log(show)
+    })
 })
 
 function sayMyName () {
   // Show the transcript paragraph
   const transcriptsDiv = document.getElementById('transcript_11labs')
   transcriptsDiv.style.display = 'block'
-
-  fetch('/generate', {
-    method: 'POST'
-  })
-    .then(response => response.text())
-    .then(data => {
-      response_text = data.response_text
-      document.getElementById('transcript_11labs').innerHTML =
-        'AI: ' + response_text
-
-      setTimeout(() => playIntro(), 1200)
-    })
 }
 
 // Function to play the intro audio
