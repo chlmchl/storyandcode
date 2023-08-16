@@ -316,7 +316,7 @@ function startRec () {
               } else {
                 if(audio_b3[b3_index].note != "" && audio_b3[b3_index].note != "nothing") {
                   console.log(audio_b3[b3_index].note)
-                  playVideo('static/vids/batch_3/' + audio_b3[b3_index].note, 5000, true)
+                  playVideo('static/vids/batch_3/' + audio_b3[b3_index].note, 5000, false)
                 } else {
                   fetchAndPlayVideo()
                 }

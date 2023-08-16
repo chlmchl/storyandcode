@@ -43,10 +43,6 @@ function fetchAndPlayVideo () {
       playVideo(filename, 3000, false)
     } else if (document.getElementById('transcript_11labs').innerHTML === "If I show you this... how does that make you feel?") {
       document.getElementById('transcript_11labs').innerHTML === `If I show you this... how does that make you feel, ${userName}?`
-    } else if(document.getElementById('transcript_11labs').innerHTML === "AI: Assess...") {
-      setTimeout(() => playAudio('static/audio/25_assess.mp3'), 2000)
-      setTimeout(() => playAudio('static/audio/25_assess.mp3'), 4000)
-      setTimeout(() => playAudio('static/audio/25_assess.mp3'), 4000)
     } else if(document.getElementById('transcript_11labs').innerHTML === "AI: Assess... Accept.") {
       filename = 'static/vids/batch_x/bx_final_orb_2.mp4';
       playVideo(filename, 4000, false)
