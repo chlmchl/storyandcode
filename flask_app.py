@@ -124,7 +124,7 @@ def generate_audio():
         voice="yoZ06aMxZJJ28mfd3POQ",
         #stream=True
     )
-    save(audio_stream, directory + '/storyandcode/static/audio/show.mp3')
+    save(audio_stream, directory + '/storyandcode/static/audio/verygood.mp3')
 
     show = "If I show you this... How does that make you feel," + userName +"?"
     
