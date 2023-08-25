@@ -112,7 +112,6 @@ function playIntro () {
 
         if (batch === 'b1') {
           vids_b1.push({ file_name, tags })
-          //console.log(vids_b1)
         } else if (batch === 'b2') {
           vids_b2.push({ file_name, tags })
         } else if (batch === 'b3') {

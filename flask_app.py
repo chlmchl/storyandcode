@@ -133,7 +133,7 @@ def generate_audio():
         voice="yoZ06aMxZJJ28mfd3POQ",
         #stream=True
     )
-    save(audio_stream, directory + '/storyandcode/static/audio/show.mp3')
+    save(audio_stream, directory + '/storyandcode/static/audio/17_show.mp3')
     return jsonify({'show': show, 'is_final': True})
 
 if __name__ == '__main__':
