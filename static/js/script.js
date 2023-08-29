@@ -235,16 +235,30 @@ function startRec () {
               if (b1_index >= 2) {
                 b1 = false
                 b2 = true
+                
               }
             }
           } else if (b2) {
-            if (inputField.value.trim() !== '') {
+            if(b2_index == 0) {
+                recognition.stop()
+                playAudio('static/audio/' + audio_b2[0].file_name)
+                document.getElementById('transcript_11labs').innerHTML =
+                'AI: ' + audio_b2[0].string
+                recognition.stop()
+                setTimeout(() => playAudio('static/audio/' + audio_b2[1].file_name), 2000)
+                setTimeout(() => document.getElementById('transcript_11labs').innerHTML =
+                'AI: ' + audio_b2[1].string, 2000)
+                setTimeout(() => b2_index += 2, 2000)
+
+            } else if (inputField.value.trim() !== '' && b2_index > 1) {
               recognition.stop()
+              console.log(b2_index)
               //console.log('starting b2')
               playAudio('static/audio/' + audio_b2[b2_index].file_name)
               document.getElementById('transcript_11labs').innerHTML =
                 'AI: ' + audio_b2[b2_index].string
               b2_index += 1
+
               if (b2_index >= 9) {
                 b2 = false
                 b3 = true
