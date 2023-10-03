@@ -40,7 +40,7 @@
       display: none;
     }
 
-    @media only screen and (max-width: 768px) {
+    @media only screen and (max-device-width: 768px) {
         .mobile-message {
             display: flex;
             align-items: center;
@@ -48,6 +48,10 @@
             height: 100vh;
             width: 100vw;
             position: absolute;
+        }
+
+        .mobile-message img{
+          height: 100%;;
         }
 
         .mobile-message p {
