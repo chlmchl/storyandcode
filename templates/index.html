@@ -35,6 +35,44 @@
     </div>
   </section>
 
+  <style>
+    .mobile-message {
+      display: none;
+    }
+
+    @media only screen and (max-width: 768px) {
+        .mobile-message {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            width: 100vw;
+            position: absolute;
+        }
+
+        .mobile-message p {
+          z-index: 10;
+          position: absolute;
+          width: 80vw;
+          margin: auto;
+        }
+        .container, nav {
+            display: none;
+        }
+
+        header{
+          left: 20px;
+        }
+
+    }
+</style>
+
+    <div class="mobile-message">
+      <p>For an optimized experience, we recommend accessing this website on a desktop computer.</p>
+      <img src="../static/img/space.jpg">
+      
+    </div>
+
 <script src="/static/js/popup.js"></script>
 </body>
 
